@@ -4,7 +4,8 @@ import sample_scripts.sample1
 import sample_scripts.sample2
 import sample_scripts.sample3
 import Trial
+import neeraje
 
 if __name__ == "__main__":
-    G = Game((40, 40), Trial, scriptblue)
+    G = Game((40, 40), Trial, neeraje)
     G.run_game()

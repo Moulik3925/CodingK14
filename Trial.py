@@ -62,7 +62,7 @@ def inspectForIsland(pirate):
    
     # OXXXX
     # X...X
-    # X...X
+    # X...X 
     # X...X
     # XXXXX
     data = np.array([[pirate.investigate_nw()[0],pirate.investigate_up()[0],pirate.investigate_ne()[0]],[pirate.investigate_left()[0],pirate.investigate_current()[0],pirate.investigate_right()[0]],[pirate.investigate_se()[0],pirate.investigate_down()[0],pirate.investigate_se()[0]]])
@@ -114,7 +114,7 @@ def CaptureIslands(pirate):
     sig = pirate.getTeamSignal()
     # print(type(sig[0]))
     r = random.randint(1,4)
-    print (status[0],status[1],status[2],sep=',')
+    # print (status[0],status[1],status[2],sep=',')
     if (ord(sig[0])!='127'and (status[0]!='myCaptured')):
         x=ord(sig[0]) 
         y=ord(sig[1])
@@ -195,8 +195,15 @@ def ActPirate(pirate):
     
     inspectForIsland(pirate)
     # print(teamsig)
-    
-    if (len(teamsig)>6 and teamsig[6]=='X'):
+    if selfsig == "":
+        for i in range(20):
+            selfsig+=chr(127)
+    if teamsig[6]=='X':
+        selfsig=replaceChar(selfsig, 3,'X')
+    if teamsig[6]=='C':
+        selfsig=replaceChar(selfsig,3,'C')    
+    # if (len(teamsig)>6 and teamsig[6]=='X'):
+    if (selfsig[3]=='X'):
     # if True:
         # if (posn[0]==(width+1-id if deploy[0]==0 else id-1) and posn[1]==(deploy[1]+id -1 if deploy[1]==0 else deploy[1]+1-id)):
         if (posn[0]==(width-id if deploy[0]==0 else id-1)):
@@ -204,7 +211,7 @@ def ActPirate(pirate):
             return moveTo(posn[0],height-1 if deploy[1]==0 else 0,pirate)
         else:
             return moveToSexy((width-id if deploy[0]==0 else (id-1)%width),((deploy[1]+id -1)%width if deploy[1]==0 else deploy[1]+1-id),pirate,"yFirst")
-    if (len(teamsig)>6 and teamsig[6]=='C'):
+    if (selfsig[3]=='C'):
         return CaptureIslands(pirate)
     if teamsig[6] == 'G':
         lowGunPowder(pirate)
@@ -221,7 +228,9 @@ def ActTeam(team):
     height = team.getDimensionY()
     frame = team.getCurrentFrame()
     status=team.trackPlayers()
-    print (status)
+    PirateList = team.getListOfSignals()
+    # print(len(PirateList))
+    # print (status)
     if teamsig == "":
         for i in range(20):
             teamsig+=chr(127)
@@ -231,9 +240,9 @@ def ActTeam(team):
     if team.getTotalGunpowder() <= 1000:
         teamsig=replaceChar(teamsig,6,'G')
     team.setTeamSignal(teamsig)
-    # for char in teamsig:
-    #     print (ord(char),end=" ")
-    # print()
+    for char in teamsig[:6]:
+        print (ord(char),end=" ")
+    print()
     
 
     # if teamsig[6] =='X':
