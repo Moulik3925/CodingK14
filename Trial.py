@@ -11,6 +11,8 @@ print(name)
 # 6 curren State of the game X explore
 # chr('65')='A'
 # ord('A')=65
+def replaceChar(string,posn,char):
+    return (string[:posn]+char+string[posn+1:])
 def islandGetInfo(island, sig):
     a = island*2 - 2
     x = ord(sig[a])
@@ -106,6 +108,61 @@ def inspectForIsland(pirate):
                 sig=updateIslandInfo(island,x+2,y+1,sig)
     pirate.setTeamSignal(sig)
 # def sendAttackForce(x,y):
+def CaptureIslands(pirate):
+    status = pirate.trackPlayers()
+    # print(status)
+    sig = pirate.getTeamSignal()
+    # print(type(sig[0]))
+    r = random.randint(1,4)
+    print (status[0],status[1],status[2],sep=',')
+    if (ord(sig[0])!='127'and (status[0]!='myCaptured')):
+        x=ord(sig[0]) 
+        y=ord(sig[1])
+        if r==1:
+            x+=1
+            y+=1
+        if r==2:
+            x+=1
+            y-=1
+        if r==3:
+            x-=1
+            y-=1
+        if r==4:
+            x-=1
+            y+=1
+        return(moveTo(x,y,pirate))
+    if (ord(sig[2])!='127'and (status[1]!='myCaptured')):
+        x=ord(sig[2]) 
+        y=ord(sig[3])
+        if r==1:
+            x+=1
+            y+=1
+        if r==2:
+            x+=1
+            y-=1
+        if r==3:
+            x-=1
+            y-=1
+        if r==4:
+            x-=1
+            y+=1
+        return(moveTo(x,y,pirate))
+    if (ord(sig[4])!='127'and (status[2]!='myCaptured')):
+        x=ord(sig[4]) 
+        y=ord(sig[5])
+        if r==1:
+            x+=1
+            y+=1
+        if r==2:
+            x+=1
+            y-=1
+        if r==3:
+            x-=1
+            y-=1
+        if r==4:
+            x-=1
+            y+=1
+        return(moveTo(x,y,pirate))
 def ActPirate(pirate):
     rum=pirate.getTotalRum()
     wood=pirate.getTotalWood()
@@ -123,6 +180,7 @@ def ActPirate(pirate):
     
     inspectForIsland(pirate)
     # print(teamsig)
+    
     if (len(teamsig)>6 and teamsig[6]=='X'):
     # if True:
         # if (posn[0]==(width+1-id if deploy[0]==0 else id-1) and posn[1]==(deploy[1]+id -1 if deploy[1]==0 else deploy[1]+1-id)):
@@ -131,8 +189,8 @@ def ActPirate(pirate):
             return moveTo(posn[0],height-1 if deploy[1]==0 else 0,pirate)
         else:
             return moveToSexy((width-id if deploy[0]==0 else (id-1)%width),((deploy[1]+id -1)%width if deploy[1]==0 else deploy[1]+1-id),pirate,"yFirst")
-
-    
+    if (len(teamsig)>6 and teamsig[6]=='C'):
+        return CaptureIslands(pirate)
 
 def ActTeam(team):
     pirateNumber=team.getTotalPirates()
@@ -145,15 +203,20 @@ def ActTeam(team):
     width = team.getDimensionX()
     height = team.getDimensionY()
     frame = team.getCurrentFrame()
-    # print ("changed")
+    status=team.trackPlayers()
+    print (status)
     if teamsig == "":
         for i in range(20):
             teamsig+=chr(127)
-    teamsig=teamsig[:6]+'X'+teamsig[7:]
+        teamsig=replaceChar(teamsig,6,'X')
+    if frame>=178:
+        teamsig=replaceChar(teamsig,6,'C')
     team.setTeamSignal(teamsig)
-    for char in teamsig:
-        print (ord(char),end=" ")
-    print()
+    # for char in teamsig:
+    #     print (ord(char),end=" ")
+    # print()
+    
+
     # if teamsig[6] =='X':
         
     # team.buildWalls(1)
