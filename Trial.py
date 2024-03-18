@@ -254,13 +254,13 @@ def ActPirate(pirate):
 
     # updating X and Y positions
     if (finalReturn == 1):
-        selfsig = replaceChar(selfsig, 2, chr(posn[1]-1))
+        selfsig = replaceChar(selfsig, 2, chr(max(0,posn[1]-1)))
     elif (finalReturn == 3):
-        selfsig = replaceChar(selfsig, 2, chr(posn[1]+1))
+        selfsig = replaceChar(selfsig, 2, chr(min(height,(posn[1]+1))))
     elif (finalReturn == 2):
-        selfsig = replaceChar(selfsig, 1, chr(posn[0]+1))
+        selfsig = replaceChar(selfsig, 1, chr((min(width,posn[0]+1))))
     elif (finalReturn == 4):
-        selfsig = replaceChar(selfsig, 1, chr(posn[0]-1))
+        selfsig = replaceChar(selfsig, 1, chr(max(0,posn[0]-1)))
     pirate.setSignal(selfsig)
     return finalReturn
 
@@ -278,7 +278,7 @@ def ActTeam(team):
     frame = team.getCurrentFrame()
     status = team.trackPlayers()
     # print(status)
-    # print(signals)
+    print(signals[3])
 
     if teamsig == "":
         for i in range(20):
