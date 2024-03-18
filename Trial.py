@@ -81,7 +81,7 @@ def inspectForIsland(pirate):
     teamsig = pirate.trackPlayers()
     sig = pirate.getTeamSignal()
     for island in range(1, 4):
-        if (sig[2*island-2] == chr(127)):
+        if (sig[2*island-2] == chr(255)):
             a = (data == ("island"+str(island)))
             # print(a)
             if (a[2][2] and not a[2][1] and not a[1][2]):
@@ -126,8 +126,8 @@ def CaptureIslands(pirate):
     sig = pirate.getTeamSignal()
     # print(type(sig[0]))
     r = random.randint(1, 4)
-    # print(status[0], status[1], status[2], sep=',')
-    if (ord(sig[0]) != '127' and (status[0] != 'myCaptured')):
+    # print (status[0],status[1],status[2],sep=',')
+    if (ord(sig[0]) != 255 and (status[0] != 'myCaptured')):
         x = ord(sig[0])
         y = ord(sig[1])
         if r == 1:
@@ -143,7 +143,7 @@ def CaptureIslands(pirate):
             x -= 1
             y += 1
         return (moveTo(x, y, pirate))
-    if (ord(sig[2]) != '127' and (status[1] != 'myCaptured')):
+    if (ord(sig[2]) != 255 and (status[1] != 'myCaptured')):
         x = ord(sig[2])
         y = ord(sig[3])
         if r == 1:
@@ -159,7 +159,7 @@ def CaptureIslands(pirate):
             x -= 1
             y += 1
         return (moveTo(x, y, pirate))
-    if (ord(sig[4]) != '127' and (status[2] != 'myCaptured')):
+    if (ord(sig[4]) != 255 and (status[2] != 'myCaptured')):
         x = ord(sig[4])
         y = ord(sig[5])
         if r == 1:
@@ -175,6 +175,25 @@ def CaptureIslands(pirate):
             x -= 1
             y += 1
         return (moveTo(x, y, pirate))
+
+
+def isSpawned(pirate):
+    # camel case, again, not my idea!!
+    position = pirate.getPosition()
+    base = pirate.getDeployPoint()
+    if position[0] == base[0] and position[1] == base[1]:
+        return True
+
+
+def spawned(pirate):
+    position = pirate.getPosition()
+    base = pirate.getDeployPoint()
+    if position[0] == base[0] and position[1] == base[1]:
+        return (moveTo(pirate.getID() % 40, 0, pirate))
+
+
+def lowGunPowder(pirate):
+    return 1
 
 
 def ActPirate(pirate):
@@ -199,8 +218,24 @@ def ActPirate(pirate):
 
     inspectForIsland(pirate)
     # print(teamsig)
-
-    if (len(teamsig) > 6 and teamsig[6] == 'X'):
+    if selfsig == "":
+        for i in range(20):
+            selfsig += chr(255)
+    if teamsig[6] == 'X':
+        selfsig = replaceChar(selfsig, 3, 'X')
+        # print("X mode")
+    elif teamsig[6] == 'C':
+        if (selfsig[3] != 'G' and selfsig[3] != 'C'):
+            r = random.randint(1, 100)
+            if r <= 25 and gunpowder <= 1000:
+                selfsig = replaceChar(selfsig, 3, 'G')
+                # print("G mode")
+            else:
+                selfsig = replaceChar(selfsig, 3, 'C')
+                # print("C mode")
+                # selfsig=replaceChar(selfsig,3,'C')
+    # if (len(teamsig)>6 and teamsig[6]=='X'):
+    if (selfsig[3] == 'X'):
         # if True:
         # if (posn[0]==(width+1-id if deploy[0]==0 else id-1) and posn[1]==(deploy[1]+id -1 if deploy[1]==0 else deploy[1]+1-id)):
         if (posn[0] == (width-id if deploy[0] == 0 else id-1)):
@@ -211,8 +246,12 @@ def ActPirate(pirate):
             finalReturn = moveToSexy((width-id if deploy[0] == 0 else (id-1) % width), ((
                 deploy[1]+id - 1) % width if deploy[1] == 0 else deploy[1]+1-id), pirate, "yFirst")
 
-    if (len(teamsig) > 6 and teamsig[6] == 'C'):
+    if (selfsig[3] == 'C'):
         finalReturn = CaptureIslands(pirate)
+    if selfsig[3] == 'G':
+        # if selfsig[3] != 'G'
+        finalReturn = lowGunPowder(pirate)
+
     # updating X and Y positions
     if (finalReturn == 1):
         selfsig = replaceChar(selfsig, 2, chr(posn[1]-1))
