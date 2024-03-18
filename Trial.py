@@ -19,8 +19,9 @@ def islandGetInfo(island, sig):
 
 def updateIslandInfo(island,x,y,sig):
     a = island*2 - 2
-    sig[a] = chr(x)
-    sig[a+1] = chr(y)
+    sig = sig[:a]+chr(x)+chr(y) + sig[a+2:]
+    # sig[a] = chr(x)
+    # sig[a+1] = chr(y)
     return sig
 
 def moveTo(x, y, Pirate):
@@ -62,15 +63,15 @@ def inspectForIsland(pirate):
     # X...X
     # X...X
     # XXXXX
-    data = np.array([pirate.investigate_nw()[0],pirate.investigate_up()[0],pirate.investigate_ne()[0]],[pirate.investigate_left()[0],pirate.investigate_current()[0],pirate.investigate_right()[0]],[pirate.investigate_s2()[0],pirate.investigate_down()[0],pirate.investigate_se()[0]])
+    data = np.array([[pirate.investigate_nw()[0],pirate.investigate_up()[0],pirate.investigate_ne()[0]],[pirate.investigate_left()[0],pirate.investigate_current()[0],pirate.investigate_right()[0]],[pirate.investigate_se()[0],pirate.investigate_down()[0],pirate.investigate_se()[0]]])
     x, y = pirate.getPosition()
     pirate.setSignal("")
     teamsig = pirate.trackPlayers()
-    sig = pirate.getTeamsignal()
+    sig = pirate.getTeamSignal()
     for island in range(1,4):
-        if(data[2*island-2]!=chr(127)):
-            a = (data==("island"+island))
-            
+        if(sig[2*island-2]==chr(127)):
+            a = (data==("island"+str(island)))
+            # print(a)
             if(a[2][2] and not a[2][1] and not a[1][2]):
                 sig=updateIslandInfo(island,x+2,y+2,sig)
             elif (a[2][2] and a[2][1] and not a[2][0]):
@@ -110,23 +111,27 @@ def ActPirate(pirate):
     wood=pirate.getTotalWood()
     gunpowder=pirate.getTotalGunpowder()
     l = pirate.trackPlayers()
-    width = 39
-    height = 39
+    width = pirate.getDimensionX()    
+    height = pirate.getDimensionY()
     frame = pirate.getCurrentFrame()
-    teamsig = pirate.getTeamSignal()
+    teamsig = str(pirate.getTeamSignal())
     deploy = pirate.getDeployPoint()
     selfsig = pirate.getSignal()
     posn = pirate.getPosition()
-    id = int(pirate.getID())
-    # if teamsig[6]=='X':
-    if True:
-        # if (posn[0]==(width+1-id if deploy[0]==0 else id-1) and posn[1]==(deploy[1]+id -1 if deploy[1]==0 else deploy[1]+1-id)):
-        if (posn[0]==(width+1-id if deploy[0]==0 else id-1)):
-            # selfsig[3]='1'
-            return moveTo(posn[0],height if deploy[1]==0 else 0,pirate)
-        else:
-            return moveTo((width+1-id if deploy[0]==0 else id-1),(deploy[1]+id -1 if deploy[1]==0 else deploy[1]+1-id),pirate)
+    # id = int(pirate.getID())
+    id = int(pirate.getID())%width
     
+    inspectForIsland(pirate)
+    # print(teamsig)
+    if (len(teamsig)>6 and teamsig[6]=='X'):
+    # if True:
+        # if (posn[0]==(width+1-id if deploy[0]==0 else id-1) and posn[1]==(deploy[1]+id -1 if deploy[1]==0 else deploy[1]+1-id)):
+        if (posn[0]==(width-id if deploy[0]==0 else id-1)):
+            # selfsig[3]='1'
+            return moveTo(posn[0],height-1 if deploy[1]==0 else 0,pirate)
+        else:
+            return moveToSexy((width-id if deploy[0]==0 else (id-1)%width),((deploy[1]+id -1)%width if deploy[1]==0 else deploy[1]+1-id),pirate,"yFirst")
+
     
 
 def ActTeam(team):
@@ -140,8 +145,15 @@ def ActTeam(team):
     width = team.getDimensionX()
     height = team.getDimensionY()
     frame = team.getCurrentFrame()
-    teamsig=='XXXXXXXXXXXXXXXXXXXXXXXX'
+    # print ("changed")
+    if teamsig == "":
+        for i in range(20):
+            teamsig+=chr(127)
+    teamsig=teamsig[:6]+'X'+teamsig[7:]
     team.setTeamSignal(teamsig)
+    for char in teamsig:
+        print (ord(char),end=" ")
+    print()
     # if teamsig[6] =='X':
         
     # team.buildWalls(1)
