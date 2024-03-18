@@ -175,6 +175,9 @@ def spawned(pirate):
     base = pirate.getDeployPoint()
     if position[0] == base[0] and position[1] == base[1]:
         return (moveTo(pirate.getID()%40 , 0 , pirate))
+    
+def lowGunPowder(pirate):
+    
 def ActPirate(pirate):
     rum=pirate.getTotalRum()
     wood=pirate.getTotalWood()
@@ -203,6 +206,8 @@ def ActPirate(pirate):
             return moveToSexy((width-id if deploy[0]==0 else (id-1)%width),((deploy[1]+id -1)%width if deploy[1]==0 else deploy[1]+1-id),pirate,"yFirst")
     if (len(teamsig)>6 and teamsig[6]=='C'):
         return CaptureIslands(pirate)
+    if teamsig[6] == 'G':
+        lowGunPowder(pirate)
 
 def ActTeam(team):
     pirateNumber=team.getTotalPirates()
@@ -223,6 +228,8 @@ def ActTeam(team):
         teamsig=replaceChar(teamsig,6,'X')
     if frame>=178:
         teamsig=replaceChar(teamsig,6,'C')
+    if team.getTotalGunpowder() <= 1000:
+        teamsig=replaceChar(teamsig,6,'G')
     team.setTeamSignal(teamsig)
     # for char in teamsig:
     #     print (ord(char),end=" ")
