@@ -177,6 +177,7 @@ def spawned(pirate):
         return (moveTo(pirate.getID()%40 , 0 , pirate))
     
 def lowGunPowder(pirate):
+    return 1
     
 def ActPirate(pirate):
     rum=pirate.getTotalRum()
@@ -194,14 +195,23 @@ def ActPirate(pirate):
     id = int(pirate.getID())%width
     
     inspectForIsland(pirate)
-    # print(teamsig)
+    print(teamsig)
     if selfsig == "":
         for i in range(20):
             selfsig+=chr(127)
     if teamsig[6]=='X':
         selfsig=replaceChar(selfsig, 3,'X')
-    if teamsig[6]=='C':
-        selfsig=replaceChar(selfsig,3,'C')    
+        print("X mode")
+    elif teamsig[6]=='C':
+        if (selfsig[3] != 'G' and selfsig[3]!='C'):
+            r = random.randint(1,100)
+            if r<=25 and gunpowder <= 1000:
+                selfsig=replaceChar(selfsig, 3,'G')
+                print("G mode")
+            else:
+                selfsig=replaceChar(selfsig, 3,'C')
+                print("C mode")
+                #selfsig=replaceChar(selfsig,3,'C') 
     # if (len(teamsig)>6 and teamsig[6]=='X'):
     if (selfsig[3]=='X'):
     # if True:
@@ -213,8 +223,9 @@ def ActPirate(pirate):
             return moveToSexy((width-id if deploy[0]==0 else (id-1)%width),((deploy[1]+id -1)%width if deploy[1]==0 else deploy[1]+1-id),pirate,"yFirst")
     if (selfsig[3]=='C'):
         return CaptureIslands(pirate)
-    if teamsig[6] == 'G':
-        lowGunPowder(pirate)
+    if selfsig[3] == 'G':
+        # if selfsig[3] != 'G' 
+        return lowGunPowder(pirate)
 
 def ActTeam(team):
     pirateNumber=team.getTotalPirates()
@@ -237,12 +248,12 @@ def ActTeam(team):
         teamsig=replaceChar(teamsig,6,'X')
     if frame>=178:
         teamsig=replaceChar(teamsig,6,'C')
-    if team.getTotalGunpowder() <= 1000:
+    if teamsig[6] != 'X' and team.getTotalGunpowder() <= 1000:
         teamsig=replaceChar(teamsig,6,'G')
     team.setTeamSignal(teamsig)
-    for char in teamsig[:6]:
-        print (ord(char),end=" ")
-    print()
+    # for char in teamsig[:6]:
+    #     print (ord(char),end=" ")
+    # print()
     
 
     # if teamsig[6] =='X':
