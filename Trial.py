@@ -163,6 +163,18 @@ def CaptureIslands(pirate):
             x-=1
             y+=1
         return(moveTo(x,y,pirate))
+def isSpawned(pirate):
+    #camel case, again, not my idea!!
+    position = pirate.getPosition()
+    base = pirate.getDeployPoint()
+    if position[0] == base[0] and position[1] == base[1]:
+        return True
+
+def spawned(pirate):
+    position = pirate.getPosition()
+    base = pirate.getDeployPoint()
+    if position[0] == base[0] and position[1] == base[1]:
+        return (moveTo(pirate.getID()%40 , 0 , pirate))
 def ActPirate(pirate):
     rum=pirate.getTotalRum()
     wood=pirate.getTotalWood()
