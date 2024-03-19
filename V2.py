@@ -279,14 +279,10 @@ def ActPirate(pirate):
             # selfsig=replaceChar(selfsig,3,'C')
     # if (len(teamsig)>6 and teamsig[6]=='X'):
     if (selfsig[3] == 'X'):
-        # if True:
-        # if (posn[0]==(width+1-id if deploy[0]==0 else id-1) and posn[1]==(deploy[1]+id -1 if deploy[1]==0 else deploy[1]+1-id)):
         # pirate signal change to C if the pirate has landed where it was intended to
-        # if posn[0] == (width-id if deploy[0] == 0 else (id-1) % width) and posn[1] == ((
-        #         deploy[1]+id - 1) % width if deploy[1] == 0 else deploy[1]+1-id):
-        #     selfsig = replaceChar(selfsig, 3, 'C')
-        #     # print("mode change")
-
+        if (posn[1] == (height-1 if deploy[1] == 0 else 0)):
+            selfsig = replaceChar(selfsig, 3, 'C')
+            print("mode change")
         if (posn[0] == (width-id if deploy[0] == 0 else id-1)):
             # selfsig[3]='1'
             finalReturn = moveTo(
