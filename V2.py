@@ -3,7 +3,7 @@ import math
 import numpy as np
 import time
 
-name = "CodingK14"
+name = "V2"
 # print(name)
 # 20 char team signal syntax
 # 0,1 coordinates of island 1

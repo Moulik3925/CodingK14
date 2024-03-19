@@ -3,7 +3,7 @@ import math
 import numpy as np
 import time
 
-name = "CodingK14"
+name = "V3_Rishi"
 print(name)
 # 20 char team signal syntax
 # 0,1 coordinates of island 1
@@ -31,7 +31,7 @@ def updateIslandInfo(island, x, y, sig):
     sig = sig[:a]+chr(x)+chr(y) + sig[a+2:]
     # sig[a] = chr(x)
     # sig[a+1] = chr(y)
-    print(x, y)
+    # print(x, y)
     return sig
 
 
@@ -88,67 +88,67 @@ def inspectForIsland(pirate):
             # print(a)
             if (a[2][2] and not a[2][1] and not a[1][2]):
                 sig = updateIslandInfo(island, x+2, y+2, sig)
-                print(a)
-                print(pirate.getPosition())
+                # print(a)
+                # print(pirate.getPosition())
             elif (a[2][2] and a[2][1] and not a[2][0]):
                 sig = updateIslandInfo(island, x+1, y+2, sig)
-                print(a)
-                print(pirate.getPosition())
+                # print(a)
+                # print(pirate.getPosition())
             elif (a[2][2] and a[2][1] and a[2][0]):
-                print(a)
-                print(pirate.getPosition())
+                # print(a)
+                # print(pirate.getPosition())
                 sig = updateIslandInfo(island, x, y+2, sig)
             elif (not a[2][2] and a[2][1] and a[2][0]):
-                print(a)
-                print(pirate.getPosition())
+                # print(a)
+                # print(pirate.getPosition())
                 sig = updateIslandInfo(island, x-1, y+2, sig)
             elif (a[2][0] and not a[2][1] and not a[1][0]):
-                print(a)
-                print(pirate.getPosition())
+                # print(a)
+                # print(pirate.getPosition())
                 sig = updateIslandInfo(island, x-2, y+2, sig)
             elif (a[2][0] and a[1][0] and not a[0][0]):
-                print(a)
-                print(pirate.getPosition())
+                # print(a)
+                # print(pirate.getPosition())
                 sig = updateIslandInfo(island, x-2, y+1, sig)
             elif (a[2][0] and a[1][0] and a[0][0]):
-                print(a)
-                print(pirate.getPosition())
+                # print(a)
+                # print(pirate.getPosition())
                 sig = updateIslandInfo(island, x-2, y, sig)
             elif (not a[2][0] and a[1][0] and a[0][0]):
-                print(a)
-                print(pirate.getPosition())
+                # print(a)
+                # print(pirate.getPosition())
                 sig = updateIslandInfo(island, x-2, y-1, sig)
             elif (a[0][0] and not a[0][1] and not a[1][0]):
-                print(a)
-                print(pirate.getPosition())
+                # print(a)
+                # print(pirate.getPosition())
                 sig = updateIslandInfo(island, x-2, y-2, sig)
             elif (a[0][0] and a[0][1] and not a[0][2]):
-                print(a)
-                print(pirate.getPosition())
+                # print(a)
+                # print(pirate.getPosition())
                 sig = updateIslandInfo(island, x-1, y-2, sig)
             elif (a[0][0] and a[0][1] and a[0][2]):
-                print(a)
-                print(pirate.getPosition())
+                # print(a)
+                # print(pirate.getPosition())
                 sig = updateIslandInfo(island, x, y-2, sig)
             elif (not a[0][0] and a[0][1] and a[0][2]):
-                print(a)
-                print(pirate.getPosition())
+                # print(a)
+                # print(pirate.getPosition())
                 sig = updateIslandInfo(island, x+1, y-2, sig)
             elif (a[0][2] and not a[1][2] and not a[0][1]):
-                print(a)
-                print(pirate.getPosition())
+                # print(a)
+                # print(pirate.getPosition())
                 sig = updateIslandInfo(island, x+2, y-2, sig)
             elif (a[0][2] and a[1][2] and not a[2][2]):
-                print(a)
-                print(pirate.getPosition())
+                # print(a)
+                # print(pirate.getPosition())
                 sig = updateIslandInfo(island, x+2, y-1, sig)
             elif (a[0][2] and a[1][2] and a[2][2]):
-                print(a)
-                print(pirate.getPosition())
+                # print(a)
+                # print(pirate.getPosition())
                 sig = updateIslandInfo(island, x+2, y, sig)
             elif (not a[0][2] and a[1][2] and a[2][2]):
-                print(a)
-                print(pirate.getPosition())
+                # print(a)
+                # print(pirate.getPosition())
                 sig = updateIslandInfo(island, x+2, y+1, sig)
     pirate.setTeamSignal(sig)
 # def sendAttackForce(x,y):
@@ -267,7 +267,7 @@ def ActPirate(pirate):
         r = random.randint(1, 100)
         if r <= 25 and gunpowder <= 1000:
             selfsig = replaceChar(selfsig, 3, 'G')
-            x = (int(pirate.getID()) + r)%40
+            x = (int(pirate.getID()) + r) % 40
             y = 0
             selfsig = replaceChar(selfsig, 4, chr(x))
             selfsig = replaceChar(selfsig, 5, chr(y))
@@ -281,6 +281,7 @@ def ActPirate(pirate):
             # print("C mode")
             # selfsig=replaceChar(selfsig,3,'C')
     # if (len(teamsig)>6 and teamsig[6]=='X'):
+    finalReturn = 0
     if (selfsig[3] == 'X'):
         # if True:
         # if (posn[0]==(width+1-id if deploy[0]==0 else id-1) and posn[1]==(deploy[1]+id -1 if deploy[1]==0 else deploy[1]+1-id)):
@@ -306,16 +307,16 @@ def ActPirate(pirate):
         y = ord(selfsig[5])
         if (posn[0] == x and posn[1] == y):
             x = random.randint(0, width-1)
-            x = (int(pirate.getID()) + x)%width
+            x = (int(pirate.getID()) + x) % width
             y = width - 1 - y
             selfsig = replaceChar(selfsig, 4, chr(x))
             selfsig = replaceChar(selfsig, 5, chr(y))
             pirate.setSignal(selfsig)
-        op = random.randint(1 , 2)
-        if op is 1:
+        op = random.randint(1, 2)
+        if op == 1:
             finalReturn = moveToSexy(x, y, pirate, "xFirst")
         else:
-            finalReturn = moveToSexy(x , y , pirate , "yFirst")
+            finalReturn = moveToSexy(x, y, pirate, "yFirst")
 
     # updating X and Y positions
     if (finalReturn == 1):

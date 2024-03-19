@@ -10,12 +10,12 @@ import V3_Moulik
 import V3_Rishi
 
 if __name__ == "__main__":
-    player1 = V3_Rishi
-    player2 = V3_Moulik
+    player1 = V3_Moulik
+    player2 = V3_Rishi
     ML = True
     rate = 10000
     epochs = 20
-    size = (40, 40)
+    size = (64, 64)
     p1Wins = [0, 0, 0, 0]
     p2Wins = [0, 0, 0, 0]
     if (ML):

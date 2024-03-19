@@ -2,7 +2,7 @@ import random
 import math
 import numpy as np
 
-name = "CodingK14"
+name = "V1"
 print(name)
 # 20 char team signal syntax
 # 0,1 coordinates of island 1
