@@ -75,7 +75,7 @@ def inspectForIsland(pirate):
     # X...X
     # XXXXX
     data = np.array([[pirate.investigate_nw()[0], pirate.investigate_up()[0], pirate.investigate_ne()[0]], [pirate.investigate_left()[
-                    0], pirate.investigate_current()[0], pirate.investigate_right()[0]], [pirate.investigate_se()[0], pirate.investigate_down()[0], pirate.investigate_se()[0]]])
+                    0], pirate.investigate_current()[0], pirate.investigate_right()[0]], [pirate.investigate_sw()[0], pirate.investigate_down()[0], pirate.investigate_se()[0]]])
     x, y = pirate.getPosition()
     pirate.setSignal("")
     teamsig = pirate.trackPlayers()
