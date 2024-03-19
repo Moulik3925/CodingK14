@@ -197,6 +197,17 @@ def spawned(pirate):
     if position[0] == base[0] and position[1] == base[1]:
         return (moveTo(pirate.getID() % 40, 0, pirate))
 
+def enemyPresent(pirate):
+    posn = pirate.getPosition()
+    teamSig = str(pirate.getTeamSignal()) # chutiya moulik and abhi forcedme to change the name of the variable!!
+    if (abs(posn[0] - ord(teamSig[0])) <= 1 and abs(posn[1] - ord(teamSig[1])) <= 1) or (abs(posn[0] - ord(teamSig[2])) <= 1 and abs(posn[1] - ord(teamSig[3])) <= 1) or (abs(posn[0] - ord(teamSig[4])) <= 1 and abs(posn[1] - ord(teamSig[5])) <= 1):
+        data = np.array([[pirate.investigate_nw()[1], pirate.investigate_up()[1], pirate.investigate_ne()[1]], [pirate.investigate_left()[1], pirate.investigate_current()[1], pirate.investigate_right()[1]], [pirate.investigate_sw()[1], pirate.investigate_down()[1], pirate.investigate_se()[1]]])
+        data=(data=="enemy")
+        # print(data)
+        for who in data:
+            if who.any() == True:
+                return True
+    return False
 
 def ActPirate(pirate):
     rum = pirate.getTotalRum()
@@ -209,6 +220,7 @@ def ActPirate(pirate):
     teamsig = str(pirate.getTeamSignal())
     deploy = pirate.getDeployPoint()
     selfsig = pirate.getSignal()
+ 
     # initialising signals
     # 0 = id 1 = x, 2 = Y
     if (selfsig == ""):
@@ -278,7 +290,7 @@ def ActPirate(pirate):
             selfsig = replaceChar(selfsig, 5, chr(y))
             pirate.setSignal(selfsig)
         op = random.randint(1 , 2)
-        if op is 1:
+        if op == 1:
             finalReturn = moveToSexy(x, y, pirate, "xFirst")
         else:
             finalReturn = moveToSexy(x , y , pirate , "yFirst")
@@ -293,6 +305,15 @@ def ActPirate(pirate):
     elif (finalReturn == 4):
         selfsig = replaceChar(selfsig, 1, chr(max(0, posn[0]-1)))
     pirate.setSignal(selfsig)
+
+    if enemyPresent(pirate):
+        if selfsig[3] == 'A':
+            teamsig = replaceChar(teamsig , 7 , 'Y')
+        if selfsig[3] == 'B':
+            teamsig = replaceChar(teamsig , 8 , 'Y')
+        if selfsig[3] == 'C':
+            teamsig = replaceChar(teamsig , 9 , 'Y')
+    pirate.setTeamSignal(teamsig)
     return finalReturn
 
 
@@ -312,7 +333,6 @@ def ActTeam(team):
         for i in range(20):
             teamsig += chr(255)
         teamsig = replaceChar(teamsig, 6, 'X')
-        teamsig = replaceChar(teamsig, 7, chr(8))
     if frame >= 178:
         teamsig = replaceChar(teamsig, 6, 'C')
     team.setTeamSignal(teamsig)
@@ -337,6 +357,18 @@ def ActTeam(team):
                 team.setTeamSignal(teamsig)
                 print("Change to G mode")
                 break
+    
+    if teamsig[7] == 'Y':
+        team.buildWalls(1)
+        teamsig = replaceChar(teamsig , 7 , 'N')
+    if teamsig[8] == 'Y':
+        team.buildWalls(2)
+        teamsig = replaceChar(teamsig , 8 , 'N')
+    if teamsig[9] == 'Y':
+        team.buildWalls(3)
+        teamsig = replaceChar(teamsig , 9 , 'N')
+    team.setTeamSignal(teamsig)
+    print(teamsig)
     # G = 0
     # A = 0
     # B = 0
@@ -348,7 +380,6 @@ def ActTeam(team):
     #         elif signal[3] == 'B': B+=1
     #         elif signal[3] == 'C': C+=1
     # print(G,A,B,C) 
-    # for char in teamsig:
     #     # print (ord(char),end=" ")
     # print()
 
@@ -364,3 +395,5 @@ def ActTeam(team):
     #     signal = l[island_no - 1]
     #     if signal == "myCaptured":
     #         team.setTeamSignal("")
+
+    # for char in teamsig:
