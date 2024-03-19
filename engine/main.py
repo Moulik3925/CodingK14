@@ -33,8 +33,8 @@ class Game:
         self.rate = 20
         self.ML = False  # Abhi
         self.redMode = 0  # Abhi
-        self.Win = None # Abhi
-        self.epoch = "" # Abhi
+        self.Win = None  # Abhi
+        self.epoch = ""  # Abhi
         self.explosion = pygame.image.load("images/explode.png")
         self.purple_pirate = pygame.image.load("images/piratepurple.png")
         self.screen = pygame.display.set_mode(
@@ -627,7 +627,7 @@ class Game:
             LIGHT_GRAY,
         )
         # self.screen.blit(
-            # blue_total, ((self.__dim[0]) * 20 + 50, self.__dim[1] * 3.5))
+        # blue_total, ((self.__dim[0]) * 20 + 50, self.__dim[1] * 3.5))
         blue_total = norm_font.render(
             "Gunpowder: " + str(round(self.__blue_team._Team__gunpowder, 2)),
             False,
@@ -654,7 +654,7 @@ class Game:
         blue_flag2coordi = norm_font.render(
             "Flag 2: " + str(self.__blue_team._Team__flag2), False, LIGHT_GRAY
         )
-        # self.screen.blit(
+        # self.screen.blit
         #     blue_flag2coordi, ((self.__dim[0]) *
         #                        20 + 50, self.__dim[1] * 3.5 + 100)
         # )
@@ -736,7 +736,7 @@ class Game:
         self.screen.blit(
             frames, ((self.__dim[0]) * 20 + 50, self.__dim[1] * 9 + 100)
         )
-        
+
         s1 = head_font.render(
             status_to_team[self.status1 +
                            1], False, status_to_color[self.status1 + 1]

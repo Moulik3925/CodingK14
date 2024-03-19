@@ -25,7 +25,7 @@ if __name__ == "__main__":
             G = Game(size, player1, player2)
             G.ML = ML
             G.rate = rate
-            G.epoch = epoch
+            G.epoch = epoch + 1
             G.run_game()
             mode, winner = G.redMode, G.Win
             if winner == "red" and mode == 0:
