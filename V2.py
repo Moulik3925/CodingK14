@@ -4,7 +4,7 @@ import numpy as np
 import time
 
 name = "CodingK14"
-print(name)
+# print(name)
 # 20 char team signal syntax
 # 0,1 coordinates of island 1
 # 2,3 coordinates of island 2
@@ -29,7 +29,7 @@ def islandGetInfo(island, sig):
 def updateIslandInfo(island, x, y, sig):
     a = island*2 - 2
     sig = sig[:a]+chr(x)+chr(y) + sig[a+2:]
-    # print(x, y)
+    # # print(x, y)
     return sig
 
 
@@ -82,70 +82,70 @@ def inspectForIsland(pirate):
     for island in range(1, 4):
         if (sig[2*island-2] == chr(255)):
             a = (data == ("island"+str(island)))
-            # print(a)
+            # # print(a)
             if (a[2][2] and not a[2][1] and not a[1][2]):
                 sig = updateIslandInfo(island, x+2, y+2, sig)
-                # print(a)
-                # print(pirate.getPosition())
+                # # print(a)
+                # # print(pirate.getPosition())
             elif (a[2][2] and a[2][1] and not a[2][0]):
                 sig = updateIslandInfo(island, x+1, y+2, sig)
-                # print(a)
-                # print(pirate.getPosition())
+                # # print(a)
+                # # print(pirate.getPosition())
             elif (a[2][2] and a[2][1] and a[2][0]):
-                # print(a)
-                # print(pirate.getPosition())
+                # # print(a)
+                # # print(pirate.getPosition())
                 sig = updateIslandInfo(island, x, y+2, sig)
             elif (not a[2][2] and a[2][1] and a[2][0]):
-                # print(a)
-                # print(pirate.getPosition())
+                # # print(a)
+                # # print(pirate.getPosition())
                 sig = updateIslandInfo(island, x-1, y+2, sig)
             elif (a[2][0] and not a[2][1] and not a[1][0]):
-                # print(a)
-                # print(pirate.getPosition())
+                # # print(a)
+                # # print(pirate.getPosition())
                 sig = updateIslandInfo(island, x-2, y+2, sig)
             elif (a[2][0] and a[1][0] and not a[0][0]):
-                # print(a)
-                # print(pirate.getPosition())
+                # # print(a)
+                # # print(pirate.getPosition())
                 sig = updateIslandInfo(island, x-2, y+1, sig)
             elif (a[2][0] and a[1][0] and a[0][0]):
-                # print(a)
-                # print(pirate.getPosition())
+                # # print(a)
+                # # print(pirate.getPosition())
                 sig = updateIslandInfo(island, x-2, y, sig)
             elif (not a[2][0] and a[1][0] and a[0][0]):
-                # print(a)
-                # print(pirate.getPosition())
+                # # print(a)
+                # # print(pirate.getPosition())
                 sig = updateIslandInfo(island, x-2, y-1, sig)
             elif (a[0][0] and not a[0][1] and not a[1][0]):
-                # print(a)
-                # print(pirate.getPosition())
+                # # print(a)
+                # # print(pirate.getPosition())
                 sig = updateIslandInfo(island, x-2, y-2, sig)
             elif (a[0][0] and a[0][1] and not a[0][2]):
-                # print(a)
-                # print(pirate.getPosition())
+                # # print(a)
+                # # print(pirate.getPosition())
                 sig = updateIslandInfo(island, x-1, y-2, sig)
             elif (a[0][0] and a[0][1] and a[0][2]):
-                # print(a)
-                # print(pirate.getPosition())
+                # # print(a)
+                # # print(pirate.getPosition())
                 sig = updateIslandInfo(island, x, y-2, sig)
             elif (not a[0][0] and a[0][1] and a[0][2]):
-                # print(a)
-                # print(pirate.getPosition())
+                # # print(a)
+                # # print(pirate.getPosition())
                 sig = updateIslandInfo(island, x+1, y-2, sig)
             elif (a[0][2] and not a[1][2] and not a[0][1]):
-                # print(a)
-                # print(pirate.getPosition())
+                # # print(a)
+                # # print(pirate.getPosition())
                 sig = updateIslandInfo(island, x+2, y-2, sig)
             elif (a[0][2] and a[1][2] and not a[2][2]):
-                # print(a)
-                # print(pirate.getPosition())
+                # # print(a)
+                # # print(pirate.getPosition())
                 sig = updateIslandInfo(island, x+2, y-1, sig)
             elif (a[0][2] and a[1][2] and a[2][2]):
-                # print(a)
-                # print(pirate.getPosition())
+                # # print(a)
+                # # print(pirate.getPosition())
                 sig = updateIslandInfo(island, x+2, y, sig)
             elif (not a[0][2] and a[1][2] and a[2][2]):
-                # print(a)
-                # print(pirate.getPosition())
+                # # print(a)
+                # # print(pirate.getPosition())
                 sig = updateIslandInfo(island, x+2, y+1, sig)
     pirate.setTeamSignal(sig)
 # def sendAttackForce(x,y):
@@ -153,11 +153,11 @@ def inspectForIsland(pirate):
 
 def CaptureIslands(pirate):
     status = pirate.trackPlayers()
-    # print(status)
+    # # print(status)
     sig = pirate.getTeamSignal()
-    # print(type(sig[0]))
+    # # print(type(sig[0]))
     r = random.randint(1, 4)
-    # print (status[0],status[1],status[2],sep=',')
+    # # print (status[0],status[1],status[2],sep=',')
     if (ord(sig[0]) != 255 and (status[0] != 'myCaptured')):
         x = ord(sig[0])
         y = ord(sig[1])
@@ -252,13 +252,13 @@ def ActPirate(pirate):
     id = int(pirate.getID()) % width
 
     inspectForIsland(pirate)
-    # print(teamsig)
+    # # print(teamsig)
     if selfsig == "":
         for i in range(20):
             selfsig += chr(255)
     if teamsig[6] == 'X' and selfsig[3] != 'C':
         selfsig = replaceChar(selfsig, 3, 'X')
-        # print("X mode")
+        # # print("X mode")
     elif teamsig[6] == 'C':
         # if (selfsig[3] != 'G' and selfsig[3] != 'C'):
         r = random.randint(1, 100)
@@ -268,21 +268,21 @@ def ActPirate(pirate):
             y = random.randint(0, width-1)
             selfsig = replaceChar(selfsig, 4, chr(x))
             selfsig = replaceChar(selfsig, 5, chr(y))
-            # print("Change to G mode")
+            # # print("Change to G mode")
         else:
             selfsig = replaceChar(selfsig, 3, 'C')
     elif teamsig[6] == 'G':
         if (gunpowder >= 2500):
             teamsig = replaceChar(teamsig, 6, 'C')
             pirate.setTeamSignal(teamsig)
-            # print("C mode")
+            # # print("C mode")
             # selfsig=replaceChar(selfsig,3,'C')
     # if (len(teamsig)>6 and teamsig[6]=='X'):
     if (selfsig[3] == 'X'):
         # pirate signal change to C if the pirate has landed where it was intended to
         if (posn[1] == (height-1 if deploy[1] == 0 else 0)):
             selfsig = replaceChar(selfsig, 3, 'C')
-            print("mode change")
+            # print("mode change")
         if (posn[0] == (width-id if deploy[0] == 0 else id-1)):
             # selfsig[3]='1'
             finalReturn = moveTo(
@@ -331,8 +331,8 @@ def ActTeam(team):
     frame = team.getCurrentFrame()
     status = team.trackPlayers()
 
-    # print(status)
-    # print(signals[3])
+    # # print(status)
+    # # print(signals[3])
 
     if teamsig == "":
         for i in range(20):
@@ -363,16 +363,16 @@ def ActTeam(team):
                 team.setTeamSignal(teamsig)
                 break
     # for char in teamsig:
-    #     print (ord(char),end=" ")
-    # print()
+    #     # print (ord(char),end=" ")
+    # # print()
 
     # if teamsig[6] =='X':
 
     # team.buildWalls(1)
     # team.buildWalls(2)
     # team.buildWalls(3)
-    # # print(team.getTeamSignal())
-    # # print(team.trackPlayers())
+    # # # print(team.getTeamSignal())
+    # # # print(team.trackPlayers())
     # if  teamsig:
     #     island_no = int (teamsig[0])
     #     signal = l[island_no - 1]

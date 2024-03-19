@@ -3,8 +3,8 @@ import math
 import numpy as np
 import time
 
-name = "CodingK14"
-print(name)
+name = "V3_Moulik"
+# print(name)
 # 20 char team signal syntax
 # 0,1 coordinates of island 1
 # 2,3 coordinates of island 2
@@ -151,12 +151,14 @@ def inspectForIsland(pirate):
 # def sendAttackForce(x,y):
 
 
-def CaptureIslands(pirate,selfsig):
+def CaptureIslands(pirate,piratesig):
     status = pirate.trackPlayers()
     
     # print(status)
     sig = pirate.getTeamSignal()
+    
     # selfsig=pirate.getSignal()
+    selfsig = piratesig
     print(len(selfsig))
     if (selfsig[3] == 'A'):
         island = 1
@@ -167,7 +169,9 @@ def CaptureIslands(pirate,selfsig):
     # print(type(sig[0]))
     r = random.randint(1, 4)
     # print (status[0],status[1],status[2],sep=',')
-    if (island==1):
+    if(status[0]=='myCaptured' and status[1]=='myCaptured' and status[2]=='myCaptured'):
+        return 0
+    elif (island==1):
         if( ord(sig[0]) != 255 and (status[0] != 'myCaptured')):
             x = ord(sig[0])
             y = ord(sig[1])
@@ -186,6 +190,8 @@ def CaptureIslands(pirate,selfsig):
             return (moveTo(x, y, pirate))
         else:
             selfsig=replaceChar(selfsig,3,'B' if random.randint(1,2)==1 else 'C')
+            print("Leave A")
+            print(status[0])
     elif (island==2):
         if( ord(sig[2]) != 255 and (status[1] != 'myCaptured')):
             x = ord(sig[2])
@@ -205,6 +211,10 @@ def CaptureIslands(pirate,selfsig):
             return (moveTo(x, y, pirate))
         else:
             selfsig=replaceChar(selfsig,3,'A' if random.randint(1,2)==1 else 'C')
+            
+            print("Leave B")
+            print(status[1])
+            
     else:
         if( ord(sig[4]) != 255 and (status[2] != 'myCaptured')):
             x = ord(sig[4])
@@ -224,7 +234,12 @@ def CaptureIslands(pirate,selfsig):
             return (moveTo(x, y, pirate))
         else:
             selfsig=replaceChar(selfsig,3,'A' if random.randint(1,2)==1 else 'B')
-
+            print("Leave C")
+            # print(status[2])
+            print(selfsig[3])
+    pirate.setSignal(selfsig)
+    print(pirate.getSignal())
+    return CaptureIslands(pirate,selfsig)
 
 def isSpawned(pirate):
     # camel case, again, not my idea!!
@@ -271,28 +286,29 @@ def ActPirate(pirate):
 
     inspectForIsland(pirate)
     # print(teamsig)
-    if selfsig == "":
-        for i in range(20):
-            selfsig += chr(255)
-    if teamsig[6] == 'X' and selfsig[3] != 'C':
+    if teamsig[6] == 'X' and selfsig[3] != 'C' and selfsig[3] != 'B' and selfsig[3] != 'A':
         selfsig = replaceChar(selfsig, 3, 'X')
         # print("X mode")
     elif teamsig[6] == 'C':
         # if (selfsig[3] != 'G' and selfsig[3] != 'C'):
         r = random.randint(1, 100)
-        if r <= 25 and gunpowder <= 1000:
+        if r <= 50 and gunpowder <= 1000:
             selfsig = replaceChar(selfsig, 3, 'G')
             x = random.randint(0, width-1)
             y = random.randint(0, width-1)
             selfsig = replaceChar(selfsig, 4, chr(x))
             selfsig = replaceChar(selfsig, 5, chr(y))
-            # print("Change to G mode")
-        elif(r<=50):
-            selfsig = replaceChar(selfsig, 3, 'A')
-        elif(r<=75):
-            selfsig = replaceChar(selfsig, 3, 'B')
-        else:
-            selfsig = replaceChar(selfsig, 3, 'C')
+        elif(selfsig[3]!='A' and selfsig[3]!='B' and selfsig[3]!='C' and selfsig[3]!='G'):
+            p = random.randint(1,3)
+            if(r==1):
+                selfsig = replaceChar(selfsig, 3, 'A')
+                # print("A")
+            elif(r==2):
+                selfsig = replaceChar(selfsig, 3, 'B')
+                # print("B")
+            else:
+                selfsig = replaceChar(selfsig, 3, 'C')
+                # print("C")
     elif teamsig[6] == 'G':
         if (gunpowder >= 2500):
             teamsig = replaceChar(teamsig, 6, 'C')
@@ -303,8 +319,19 @@ def ActPirate(pirate):
     if (selfsig[3] == 'X'):
         # pirate signal change to C if the pirate has landed where it was intended to
         if (posn[1] == (height-1 if deploy[1] == 0 else 0)):
-            selfsig = replaceChar(selfsig, 3, 'C')
-            # print("mode change")
+            # selfsig = replaceChar(selfsig, 3, 'C')
+            # finalReturn=1
+            r=random.randint(1,3)
+            if(r==1):
+                selfsig = replaceChar(selfsig, 3, 'A')
+                # print("A")
+            elif(r==2):
+                selfsig = replaceChar(selfsig, 3, 'B')
+                # print("B")   
+            else:
+                selfsig = replaceChar(selfsig, 3, 'C')
+                # print("C")
+            # # print("mode change")
         if (posn[0] == (width-id if deploy[0] == 0 else id-1)):
             # selfsig[3]='1'
             finalReturn = moveTo(
@@ -314,9 +341,8 @@ def ActPirate(pirate):
                 deploy[1]+id - 1) % width if deploy[1] == 0 else deploy[1]+1-id), pirate, "yFirst")
     elif(selfsig[3] == 'A' or selfsig[3] == 'B' or selfsig[3] == 'C'):
         # print(len(selfsig))
-        # print (selfsig[3])
-        return CaptureIslands(pirate,selfsig)
-    if selfsig[3] == 'G':
+        finalReturn = CaptureIslands(pirate,selfsig)
+    elif selfsig[3] == 'G':
         # if selfsig[3] != 'G'\
         x = ord(selfsig[4])
         y = ord(selfsig[5])
@@ -372,7 +398,6 @@ def ActTeam(team):
     currentAlive = len(signals)
     i = 0
     maxAlive = 8
-    
     while (i+1 < len(signals) and signals[i+1] != ""):
         maxAlive = ord(signals[i][0]) + len(signals) - i
         i += 1
@@ -385,9 +410,21 @@ def ActTeam(team):
             if signal[3] == 'G':
                 teamsig = replaceChar(teamsig, 6, 'G')
                 team.setTeamSignal(teamsig)
+                print("Change to G mode")
                 break
+    G = 0
+    A = 0
+    B = 0
+    C = 0
+    for signal in signals:
+        if (signal!= ""):
+            if signal[3] == 'G': G+=1
+            elif signal[3] == 'A': A+=1
+            elif signal[3] == 'B': B+=1
+            elif signal[3] == 'C': C+=1
+    print(G,A,B,C) 
     # for char in teamsig:
-    #     print (ord(char),end=" ")
+    #     # print (ord(char),end=" ")
     # print()
 
     # if teamsig[6] =='X':
