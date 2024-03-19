@@ -7,5 +7,5 @@ import Trial
 import neeraje
 
 if __name__ == "__main__":
-    G = Game((40, 40), Trial, neeraje)
+    G = Game((40, 40), Trial, Trial)
     G.run_game()

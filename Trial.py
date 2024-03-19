@@ -176,8 +176,11 @@ def spawned(pirate):
     if position[0] == base[0] and position[1] == base[1]:
         return (moveTo(pirate.getID()%40 , 0 , pirate))
     
-def lowGunPowder(pirate):
-    return 1
+def lowGunPowder(pirate , n):
+    moveToSexy((pirate.getID() + n)%40 , 0 , pirate , "xFirst")
+
+#def zigzag(pirate):
+
     
 def ActPirate(pirate):
     rum=pirate.getTotalRum()
@@ -225,7 +228,9 @@ def ActPirate(pirate):
         return CaptureIslands(pirate)
     if selfsig[3] == 'G':
         # if selfsig[3] != 'G' 
-        return lowGunPowder(pirate)
+        return lowGunPowder(pirate , r)
+    if gunpowder >= 1500:
+        selfsig = replaceChar(selfsig , 3 , 'C')
 
 def ActTeam(team):
     pirateNumber=team.getTotalPirates()
