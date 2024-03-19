@@ -6,8 +6,9 @@ import sample_scripts.sample3
 import V3_Rishi
 import neeraje
 import V2
-
+import V3_Moulik
 if __name__ == "__main__":
+<<<<<<< HEAD
     player1 = V2
     player2 = V3_Rishi
     ML = True
@@ -52,3 +53,8 @@ if __name__ == "__main__":
     else:
         G = Game(size, player1, player2)
         G.run_game()
+=======
+    G = Game((40, 40), V3_Moulik, V3_Rishi)
+    # G = Game((40, 40), V2, V1)
+    G.run_game()
+>>>>>>> 034e7fa1f60db30c92ef445e7a7ccee053a9589a
