@@ -8,7 +8,6 @@ import neeraje
 import V2
 
 if __name__ == "__main__":
-    # G = Game((40, 40), Trial, neeraje)
     G = Game((40, 40), V1, V2)
-    # G = Game((40, 40), Trial_sexy, Trial)
+    # G = Game((40, 40), V2, V1)
     G.run_game()
