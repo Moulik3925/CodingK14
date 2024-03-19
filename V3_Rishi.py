@@ -225,7 +225,6 @@ def spawned(pirate):
     if position[0] == base[0] and position[1] == base[1]:
         return (moveTo(pirate.getID() % 40, 0, pirate))
 
-
 # def lowGunPowder(pirate, x):
 #     l = pirate.getDimensionX()
 #     x = random(0, l-1)

@@ -292,12 +292,12 @@ def ActPirate(pirate):
     elif teamsig[6] == 'C':
         # if (selfsig[3] != 'G' and selfsig[3] != 'C'):
         r = random.randint(1, 100)
-        if r <= 50 and gunpowder <= 1000:
+        if r <= 25 and gunpowder <= 1000:
             selfsig = replaceChar(selfsig, 3, 'G')
-            x = random.randint(0, width-1)
-            y = random.randint(0, width-1)
+            x = (int(pirate.getID()) + r)%40
+            y = 0
             selfsig = replaceChar(selfsig, 4, chr(x))
-            selfsig = replaceChar(selfsig, 5, chr(y))
+            selfsig = replaceChar(selfsig, 5, chr(y)) 
         elif(selfsig[3]!='A' and selfsig[3]!='B' and selfsig[3]!='C' and selfsig[3]!='G'):
             p = random.randint(1,3)
             if(r==1):
@@ -343,16 +343,20 @@ def ActPirate(pirate):
         # print(len(selfsig))
         finalReturn = CaptureIslands(pirate,selfsig)
     elif selfsig[3] == 'G':
-        # if selfsig[3] != 'G'\
         x = ord(selfsig[4])
         y = ord(selfsig[5])
         if (posn[0] == x and posn[1] == y):
             x = random.randint(0, width-1)
-            y = random.randint(0, width-1)
+            x = (int(pirate.getID()) + x)%width
+            y = width - 1 - y
             selfsig = replaceChar(selfsig, 4, chr(x))
             selfsig = replaceChar(selfsig, 5, chr(y))
             pirate.setSignal(selfsig)
-        finalReturn = moveTo(x, y, pirate)
+        op = random.randint(1 , 2)
+        if op is 1:
+            finalReturn = moveToSexy(x, y, pirate, "xFirst")
+        else:
+            finalReturn = moveToSexy(x , y , pirate , "yFirst")
 
     # updating X and Y positions
     if (finalReturn == 1):
