@@ -8,11 +8,11 @@ import neeraje
 import V2
 import V3_Moulik
 if __name__ == "__main__":
-    player1 = V3_Moulik
-    player2 = neeraje
+    player1 = V3_Rishi
+    player2 = V3_Moulik
     ML = True
     rate = 10000
-    epochs = 10
+    epochs = 20
     size = (40, 40)
     p1Wins = [0, 0, 0, 0]
     p2Wins = [0, 0, 0, 0]
@@ -23,6 +23,7 @@ if __name__ == "__main__":
             G = Game(size, player1, player2)
             G.ML = ML
             G.rate = rate
+            G.epoch = epoch
             G.run_game()
             mode, winner = G.redMode, G.Win
             if winner == "red" and mode == 0:
@@ -37,6 +38,7 @@ if __name__ == "__main__":
             G = Game(size, player2, player1)
             G.ML = ML
             G.rate = rate
+            G.epoch = epoch + epochs//2
             G.run_game()
             mode, winner = G.redMode, G.Win
             if winner == "blue" and mode == 0:

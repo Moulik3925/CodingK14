@@ -235,6 +235,9 @@ def ActPirate(pirate):
         if (gunpowder >= 50 * ord(selfsig[10])):
             teamsig = replaceChar(teamsig, 6, 'C')
             pirate.setTeamSignal(teamsig)
+            
+    finalReturn = 0
+    #SelfSignals
     if (selfsig[3]=='Y'):
         if (posn[1] == (height-1 if not (deploy[1] == 0) else 0)):
             r=random.randint(1,3)
@@ -346,7 +349,7 @@ def ActTeam(team):
             elif signal[3] == 'A': A+=1
             elif signal[3] == 'B': B+=1
             elif signal[3] == 'C': C+=1
-    print(Y,G,A,B,C) 
+    # print(Y,G,A,B,C) 
 
     # team.buildWalls(1)
     # team.buildWalls(2)
