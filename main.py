@@ -9,13 +9,73 @@ import V2
 import V3_Moulik
 import V3_Rishi
 
+
+def collectibles(G):
+    n = G.dim[0]
+    arr = G.collectibles
+
+    # rum,gunpowder,wood
+    topLeft = [0, 0, 0]
+    for i in range(n):
+        for j in range(0, n-i):
+            if arr[i][j] == -1:
+                topLeft[0] += 1
+            elif arr[i][j] == -2:
+                topLeft[1] += 1
+            elif arr[i][j] == -3:
+                topLeft[2] += 1
+    topRight = [0, 0, 0]
+    for i in range(n):
+        for j in range(i, n):
+            if arr[i][j] == -1:
+                topRight[0] += 1
+            elif arr[i][j] == -2:
+                topRight[1] += 1
+            elif arr[i][j] == -3:
+                topRight[2] += 1
+    bottomLeft = [0, 0, 0]
+    for i in range(n):
+        for j in range(0, i):
+            if arr[i][j] == -1:
+                bottomLeft[0] += 1
+            elif arr[i][j] == -2:
+                bottomLeft[1] += 1
+            elif arr[i][j] == -3:
+                bottomLeft[2] += 1
+    bottomRight = [0, 0, 0]
+    for i in range(n):
+        for j in range(n-i+1, n):
+            if arr[i][j] == -1:
+                bottomRight[0] += 1
+            elif arr[i][j] == -2:
+                bottomRight[1] += 1
+            elif arr[i][j] == -3:
+                bottomRight[2] += 1
+    # mark = {-1: 'R', 0: '_', -2: 'G', -3: 'W'}
+    mark = {-1: 'R', 0: '_', -2: '_', -3: '_'}  # if watching only rum
+    with open('collectibles.txt', 'w') as f:
+        for i in range(n):
+            for j in range(n):
+                f.write(mark[int(arr[i][j])])
+            f.write('\n')
+        f.write("topLeft = " + str(topLeft[0]) + ' ' +
+                str(topLeft[1]) + ' ' + str(topLeft[2]) + '\n')
+        f.write("topRight = " + str(topRight[0]) + ' ' +
+                str(topRight[1]) + ' ' + str(topRight[2]) + '\n')
+        f.write("bottomLeft = " + str(bottomLeft[0]) + ' ' +
+                str(bottomLeft[1]) + ' ' + str(bottomLeft[2]) + '\n')
+        f.write("bottomRight = " + str(bottomRight[0]) + ' ' + str(
+            bottomRight[1]) + ' ' + str(bottomRight[2]) + '\n')
+    return
+
+
 if __name__ == "__main__":
     player1 = V3_Moulik
     player2 = V3_Rishi
-    ML = True
-    rate = 10000
+    ML = False
+    rate = 100000
     epochs = 20
-    size = (64, 64)
+    size = (40, 40)
     p1Wins = [0, 0, 0, 0]
     p2Wins = [0, 0, 0, 0]
     if (ML):
@@ -55,4 +115,5 @@ if __name__ == "__main__":
         print(player2.name, p2Wins, sum(p2Wins))
     else:
         G = Game(size, player1, player2)
+        collectibles(G)
         G.run_game()

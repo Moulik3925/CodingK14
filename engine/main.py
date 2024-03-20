@@ -35,6 +35,7 @@ class Game:
         self.redMode = 0  # Abhi
         self.Win = None  # Abhi
         self.epoch = ""  # Abhi
+        self.pause = False  # Abhi
         self.explosion = pygame.image.load("images/explode.png")
         self.purple_pirate = pygame.image.load("images/piratepurple.png")
         self.screen = pygame.display.set_mode(
@@ -88,6 +89,11 @@ class Game:
         self.__island3 = Island(self.screen, 3, self,
                                 self.flag3, self.__Pirates)
         self.__collectibles = self.create_map()
+        # np array of items
+        # rum = -1 #gunpowder = -2 #wood = -3
+        # Abhi
+        self.collectibles = self.__collectibles
+        self.dim = self.__dim
 
         self.__PositionToPirate[self.flag1] = {self.__island1: True}
         self.__PositionToPirate[self.flag2] = {self.__island2: True}
@@ -533,6 +539,16 @@ class Game:
         self.screen.blit(
             speed_up, ((self.__dim[0]) * 20 + 230, self.__dim[1] * 18))
 
+        pp_button = button_font.render("Pause&Play", True, DARK_GREY)
+        self.pp_rect = pp_button.get_rect()
+        self.pp_rect.center = (
+            (self.__dim[0]) * 20 + 159, self.__dim[1] * 18 - 45)
+        self.pp_rect.width += 20
+        self.pp_rect.height += 20
+        pygame.draw.rect(self.screen, LIGHT_GRAY, self.pp_rect)
+        self.screen.blit(
+            pp_button, ((self.__dim[0]) * 20 + 100, self.__dim[1] * 18-45))
+
         # ss = button_font.render("SS", True, DARK_GREY)
         # self.ss_rect = ss.get_rect()
         # self.ss_rect.center = ((self.__dim[0]) * 20 + 258, self.__dim[1] * 18 + 5 - 40)
@@ -567,6 +583,21 @@ class Game:
                     <= self.fast_rect.y + self.slow_rect.height
                 ):
                     self.rate += 2
+                elif (
+                    self.pp_rect.x
+                    <= mouse[0]
+                    <= self.pp_rect.x + self.pp_rect.width
+                    and self.pp_rect.y
+                    <= mouse[1]
+                    <= self.pp_rect.y + self.pp_rect.height
+                ):
+                    self.pause = not self.pause
+                    if self.pause:
+                        while self.pause:  # Wait for unpause
+                            for event in pygame.event.get():
+                                if event.type == pygame.MOUSEBUTTONDOWN:
+                                    self.pause = False
+                                    break
                 # elif (
                 #     self.ss_rect.x
                 #     <= mouse[0]
