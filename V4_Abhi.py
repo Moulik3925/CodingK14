@@ -3,7 +3,7 @@ import math
 import numpy as np
 import time
 
-name = "V4"
+name = "V4_Abhi"
 # 20 char team signal syntax
 # 0,1 coordinates of island 1
 # 2,3 coordinates of island 2
@@ -247,7 +247,7 @@ def ActPirate(pirate):
     posn = pirate.getPosition()
     id = int(pirate.getID()) % width
     inspectForIsland(pirate)
-    if teamsig[6] == 'X' and selfsig[3] != 'C' and selfsig[3] != 'B' and selfsig[3] != 'A' and selfsig[3] != 'Y':
+    if teamsig[6] == 'X' and selfsig[3] != 'C' and selfsig[3] != 'B' and selfsig[3] != 'A' and selfsig[3] != 'Y' and selfsig[3] != 'Z':
         selfsig = replaceChar(selfsig, 3, 'X')
     elif teamsig[6] == 'C':
         r = random.randint(1, 100)
@@ -272,8 +272,28 @@ def ActPirate(pirate):
 
     finalReturn = 0
     # SelfSignals
+    if (selfsig[3] == 'X'):
+        # pirate signal change to C if the pirate has landed where it was intended to
+        if (posn[1] == (height-1 if deploy[1] == 0 else 0)):
+            selfsig = replaceChar(selfsig, 3, 'Z')
+        if (posn[0] == (width-id if deploy[0] == 0 else id-1)):
+            finalReturn = moveTo(
+                posn[0], height-1 if deploy[1] == 0 else 0, pirate)
+        else:
+            finalReturn = moveToSexy((width-id if deploy[0] == 0 else (id-1) % width), ((
+                deploy[1]+id - 1) % width if deploy[1] == 0 else deploy[1]+1-id), pirate, "yFirst")
+    if (selfsig[3] == 'Z'):
+        # pirate signal change to C if the pirate has landed where it was intended to
+        if (posn[1] == (0 if deploy[1] == 0 else height - 1)):
+            selfsig = replaceChar(selfsig, 3, 'Y')
+        if (posn[0] == (width-id if deploy[0] == 0 else id-1)):
+            finalReturn = moveTo(
+                posn[0], height-1 if not (deploy[1] == 0) else 0, pirate)
+        else:
+            finalReturn = moveToSexy(
+                (width-id if deploy[0] == 0 else id), (id - 1 if deploy[1] == 0 else deploy[1]+1-id), pirate, "yFirst")
     if (selfsig[3] == 'Y'):
-        if (posn[1] == (height-1 if not (deploy[1] == 0) else 0)):
+        if (posn[1] == (height-1 if (deploy[1] == 0) else 0)):
             r = random.randint(1, 3)
             if (r == 1 and status[0] != 'myCaptured'):
                 selfsig = replaceChar(selfsig, 3, 'A')
@@ -283,20 +303,11 @@ def ActPirate(pirate):
                 selfsig = replaceChar(selfsig, 3, 'C')
         if (posn[0] == (width-id if deploy[0] == 0 else id-1)):
             finalReturn = moveTo(
-                posn[0], height-1 if not (deploy[1] == 0) else 0, pirate)
+                posn[0], height-1 if (deploy[1] == 0) else 0, pirate)
         else:
             finalReturn = moveToSexy(
                 (width-id if deploy[0] == 0 else id), (id - 1 if deploy[1] == 0 else deploy[1]+1-id), pirate, "yFirst")
-    if (selfsig[3] == 'X'):
-        # pirate signal change to C if the pirate has landed where it was intended to
-        if (posn[1] == (height-1 if deploy[1] == 0 else 0)):
-            selfsig = replaceChar(selfsig, 3, 'Y')
-        if (posn[0] == (width-id if deploy[0] == 0 else id-1)):
-            finalReturn = moveTo(
-                posn[0], height-1 if deploy[1] == 0 else 0, pirate)
-        else:
-            finalReturn = moveToSexy((width-id if deploy[0] == 0 else (id-1) % width), ((
-                deploy[1]+id - 1) % width if deploy[1] == 0 else deploy[1]+1-id), pirate, "yFirst")
+
     elif (selfsig[3] == 'A' or selfsig[3] == 'B' or selfsig[3] == 'C'):
         selfsig, finalReturn = CaptureIslands(pirate, selfsig)
     elif selfsig[3] == 'G':
@@ -355,7 +366,7 @@ def ActTeam(team):
         for i in range(20):
             teamsig += chr(255)
         teamsig = replaceChar(teamsig, 6, 'X')
-    if frame >= 178:
+    if frame >= 200:
         teamsig = replaceChar(teamsig, 6, 'C')
     team.setTeamSignal(teamsig)
 

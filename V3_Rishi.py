@@ -4,7 +4,6 @@ import numpy as np
 import time
 
 name = "V3_Rishi"
-print(name)
 # 20 char team signal syntax
 # 0,1 coordinates of island 1
 # 2,3 coordinates of island 2
