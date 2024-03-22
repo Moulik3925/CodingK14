@@ -249,9 +249,9 @@ def ActPirate(pirate):
     inspectForIsland(pirate)
     if teamsig[6] == 'X' and selfsig[3] != 'C' and selfsig[3] != 'B' and selfsig[3] != 'A' and selfsig[3] != 'Y':
         selfsig = replaceChar(selfsig, 3, 'X')
-    elif teamsig[6] == 'C':
+    elif teamsig[6] == 'C' or teamsig[6] == 'F':
         r = random.randint(1, 100)
-        if r <= 30 and gunpowder <= 20 * ord(teamsig[6]):
+        if teamsig[6]=='C' and r <= 30 and gunpowder <= 20 * ord(teamsig[6]):
             selfsig = replaceChar(selfsig, 3, 'G')
             x = (int(pirate.getID()) + r) % 40
             y = 0
@@ -266,8 +266,11 @@ def ActPirate(pirate):
             elif (r == 3 and status[2] != 'myCaptured'):
                 selfsig = replaceChar(selfsig, 3, 'C')
     elif teamsig[6] == 'G':
-        if (gunpowder >= 50 * ord(selfsig[10])):
-            teamsig = replaceChar(teamsig, 6, 'C')
+        # print(ord(teamsig[11]),ord(teamsig[12]),ord(teamsig[13]),sep=",")
+        if ((gunpowder >= 50 * ord(selfsig[10])) or (ord(teamsig[11]) == 0 and status[0]!='myCaptured') or (ord(teamsig[12]) == 0 and status[1]!='myCaptured') or (ord(teamsig[13]) == 0 and status[2]!='myCaptured')):
+        # if (True):
+            print("MC is here")
+            teamsig = replaceChar(teamsig, 6, 'F')
             pirate.setTeamSignal(teamsig)
 
     finalReturn = 0
@@ -327,13 +330,13 @@ def ActPirate(pirate):
     teamsig = pirate.getTeamSignal()
     if enemyPresent(pirate):
         if selfsig[3] == 'A':
-            print("A")
+            # print("A")
             teamsig = replaceChar(teamsig, 7, 'Y')
         if selfsig[3] == 'B':
-            print("B")
+            # print("B")
             teamsig = replaceChar(teamsig, 8, 'Y')
         if selfsig[3] == 'C':
-            print("C")
+            # print("C")
             teamsig = replaceChar(teamsig, 9, 'Y')
     pirate.setTeamSignal(teamsig)
     return finalReturn
@@ -351,6 +354,7 @@ def ActTeam(team):
     height = team.getDimensionY()
     frame = team.getCurrentFrame()
     status = team.trackPlayers()
+    
     if teamsig == "":
         for i in range(20):
             teamsig += chr(255)
@@ -392,22 +396,27 @@ def ActTeam(team):
         team.buildWalls(3)
         teamsig = replaceChar(teamsig, 9, 'N')
 
-    team.setTeamSignal(teamsig)
 
     # if teamsig[6] =='X':
-    # Y = 0
-    # G = 0
-    # A = 0
-    # B = 0
-    # C = 0
-    # for signal in signals:
-    #     if (signal!= ""):
-    #         if signal[3]=='G':G+=1
-    #         if signal[3] == 'Y': Y+=1
-    #         elif signal[3] == 'A': A+=1
-    #         elif signal[3] == 'B': B+=1
-    #         elif signal[3] == 'C': C+=1
-    # print(Y,G,A,B,C)
+    Y = 0
+    G = 0
+    A = 0
+    B = 0
+    C = 0
+    for signal in signals:
+        if (signal!= ""):
+            if signal[3]=='G':G+=1
+            if signal[3] == 'Y': Y+=1
+            elif signal[3] == 'A': A+=1
+            elif signal[3] == 'B': B+=1
+            elif signal[3] == 'C': C+=1
+    teamsig=replaceChar(teamsig,11,chr(A))
+    teamsig=replaceChar(teamsig,12,chr(B))
+    teamsig=replaceChar(teamsig,13,chr(C))
+    teamsig=replaceChar(teamsig,14,chr(G))
+    teamsig=replaceChar(teamsig,15,chr(Y))
+    team.setTeamSignal(teamsig)
+    print(Y,G,A,B,C)
 
     # team.buildWalls(1)
     # team.buildWalls(2)
