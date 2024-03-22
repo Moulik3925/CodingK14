@@ -27,7 +27,7 @@ class Pirate(Sprite):
             ):
                 return True
         return False
-    
+
     def __on_death(self, islands):
         for island in islands:
             if (self.rect.x // 20, self.rect.y // 20) in island.coordi:
@@ -39,7 +39,7 @@ class Pirate(Sprite):
                     island.blue_present = False
 
     def __check_move(self, island, x0, y0, x1, y1):
-        if (x0 // 20, y0 // 20) not in island.coordi and ( x1 // 20, y1 // 20) in island.coordi:
+        if (x0 // 20, y0 // 20) not in island.coordi and (x1 // 20, y1 // 20) in island.coordi:
             if island.red_wall or island.blue_wall:
                 return True
             else:
@@ -48,7 +48,7 @@ class Pirate(Sprite):
                 else:
                     island.blue_present = True
 
-        elif (x0 // 20, y0 // 20) in island.coordi and ( x1 // 20, y1 // 20) not in island.coordi:
+        elif (x0 // 20, y0 // 20) in island.coordi and (x1 // 20, y1 // 20) not in island.coordi:
             if island.red_wall or island.blue_wall:
                 return True
             else:
@@ -85,7 +85,7 @@ class Pirate(Sprite):
 
     __wall_case = ("wall", "blank")
 
-    def __investigate(self,x,y):
+    def __investigate(self, x, y):
 
         who = 'blank'
         where = 'blank'
@@ -102,7 +102,7 @@ class Pirate(Sprite):
                     who = "friend"
             case 3:
                 who = "both"
-            
+
         match(self.__myTeam._Team__myGame._Game__Pirates[x][y] >> 2):
             case 1:
                 where = "island1"
@@ -122,7 +122,7 @@ class Pirate(Sprite):
             except:
                 return
 
-            for island in (island1,island2,island3):
+            for island in (island1, island2, island3):
                 if self.__check_move(island, self.rect.x, self.rect.y, self.rect.x, self.rect.y - 20):
                     self.rect.y += 20
                     break
@@ -138,8 +138,8 @@ class Pirate(Sprite):
                 ][self]
             except:
                 return
-            
-            for island in (island1,island2,island3):
+
+            for island in (island1, island2, island3):
                 if self.__check_move(island, self.rect.x, self.rect.y, self.rect.x, self.rect.y + 20):
                     self.rect.y -= 20
                     break
@@ -156,7 +156,7 @@ class Pirate(Sprite):
             except:
                 return
 
-            for island in (island1,island2,island3):
+            for island in (island1, island2, island3):
                 if self.__check_move(island, self.rect.x, self.rect.y, self.rect.x - 20, self.rect.y):
                     self.rect.x += 20
                     break
@@ -173,7 +173,7 @@ class Pirate(Sprite):
             except:
                 return
 
-            for island in (island1,island2,island3):
+            for island in (island1, island2, island3):
                 if self.__check_move(island, self.rect.x, self.rect.y, self.rect.x + 20, self.rect.y):
                     self.rect.x -= 20
                     break
@@ -182,7 +182,7 @@ class Pirate(Sprite):
             self.__place_after_move()
 
     # player functions start here
-            
+
     def investigate_current(self):
         return self.__investigate(self.rect.x // 20, self.rect.y // 20)
 
@@ -194,7 +194,7 @@ class Pirate(Sprite):
     def investigate_down(self):
         if self.rect.y == (self.__myTeam._Team__myGame._Game__dim[1] - 1) * 20:
             return self.__wall_case
-        return self.__investigate(self.rect.x // 20, self.rect.y // 20 + 1)     
+        return self.__investigate(self.rect.x // 20, self.rect.y // 20 + 1)
 
     def investigate_left(self):
         if self.rect.x == 0:
@@ -246,7 +246,7 @@ class Pirate(Sprite):
 
     def getPosition(self):
         return (self.rect.x // 20, self.rect.y // 20)
-    
+
     def getDeployPoint(self):
         return self.__myTeam.getDeployPoint()
 
@@ -255,13 +255,13 @@ class Pirate(Sprite):
 
     def getDimensionY(self):
         return self.__myTeam._Team__myGame._Game__dim[0]
-    
+
     def getID(self):
         return self.__initialSignal
 
     def getSignal(self):
         return self.__signal
-    
+
     def setSignal(self, sig):
         str = "wncc"
         if type(sig) != type(str):
@@ -273,9 +273,9 @@ class Pirate(Sprite):
 
     def setTeamSignal(self, signal):
         return self.__myTeam.setTeamSignal(signal)
-    
+
     def trackPlayers(self):
         return self.__myTeam.trackPlayers()
-    
+
     def getCurrentFrame(self):
         return self.__myTeam.getCurrentFrame()
