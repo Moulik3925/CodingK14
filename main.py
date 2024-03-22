@@ -7,13 +7,13 @@ import sample_scripts.sample3
 import neeraje
 import V2
 import V3_Moulik
-import V3_Rishi
+import V4
 
 if __name__ == "__main__":
-    player1 = V3_Rishi
+    player1 = V4
     player2 = V3_Moulik
     ML = True
-    rate = 10000
+    rate = 100
     epochs = 20
     size = (40, 40)
     p1Wins = [0, 0, 0, 0]

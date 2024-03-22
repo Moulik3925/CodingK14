@@ -3,7 +3,7 @@ import math
 import numpy as np
 import time
 
-name = "V3_Moulik"
+name = "V3_Moulikkkk"
 # 20 char team signal syntax
 # 0,1 coordinates of island 1
 # 2,3 coordinates of island 2
@@ -196,7 +196,7 @@ def spawned(pirate):
 
 def enemyPresent(pirate):
     posn = pirate.getPosition()
-    teamSig = str(pirate.getTeamSignal()) # chutiya moulik and abhi forcedme to change the name of the variable!!
+    teamSig = str(pirate.getTeamSignal()) # chutiya moulik and abhi forced me to change the name of the variable!!
     if (abs(posn[0] - ord(teamSig[0])) <= 1 and abs(posn[1] - ord(teamSig[1])) <= 1) or (abs(posn[0] - ord(teamSig[2])) <= 1 and abs(posn[1] - ord(teamSig[3])) <= 1) or (abs(posn[0] - ord(teamSig[4])) <= 1 and abs(posn[1] - ord(teamSig[5])) <= 1):
         data = np.array([[pirate.investigate_nw()[1], pirate.investigate_up()[1], pirate.investigate_ne()[1]], [pirate.investigate_left()[1], pirate.investigate_current()[1], pirate.investigate_right()[1]], [pirate.investigate_sw()[1], pirate.investigate_down()[1], pirate.investigate_se()[1]]])
         data=(data=="enemy")
