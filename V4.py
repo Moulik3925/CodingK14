@@ -419,7 +419,7 @@ def ActTeam(team):
     teamsig=replaceChar(teamsig,14,chr(G))
     teamsig=replaceChar(teamsig,15,chr(Y))
     team.setTeamSignal(teamsig)
-    print(Y,G,A,B,C)
+    # print(Y,G,A,B,C)
 
     # team.buildWalls(1)
     # team.buildWalls(2)

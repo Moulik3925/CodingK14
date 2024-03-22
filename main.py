@@ -14,8 +14,8 @@ import V4
 
 if __name__ == "__main__":
     player1 = V4
-    player2 = V3_Moulik
-    ML = True
+    player2 = V4_Abhi
+    ML = False
     fair = True
     rate = 100000
     epochs = 20
@@ -62,6 +62,6 @@ if __name__ == "__main__":
         print(player1.name, p1Wins, sum(p1Wins))
         print(player2.name, p2Wins, sum(p2Wins))
     else:
-        G = Game(size, player1, player2)
+        G = Game(size, player1, player2, False)
         # G.countCollect()
         G.run_game()
