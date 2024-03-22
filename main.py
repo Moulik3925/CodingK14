@@ -13,9 +13,10 @@ import V4
 
 
 if __name__ == "__main__":
-    player1 = V4_Abhi
+    player1 = V4
     player2 = V3_Moulik
     ML = True
+    fair = True
     rate = 100000
     epochs = 20
     size = (40, 40)
@@ -25,7 +26,7 @@ if __name__ == "__main__":
         # 0 1
         # 3 2
         for epoch in range(epochs//2):
-            G = Game(size, player1, player2)
+            G = Game(size, player1, player2, fair)
             G.ML = ML
             G.rate = rate
             G.epoch = epoch + 1
@@ -42,7 +43,7 @@ if __name__ == "__main__":
             elif winner == "blue" and mode == 1:
                 p2Wins[3] += 1
         for epoch in range(epochs//2):
-            G = Game(size, player2, player1)
+            G = Game(size, player2, player1, fair)
             G.ML = ML
             G.rate = rate
             G.epoch = epoch + epochs//2 + 1

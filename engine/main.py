@@ -24,7 +24,7 @@ root.withdraw()
 
 
 class Game:
-    def __init__(self, dim, red_team, blue_team):
+    def __init__(self, dim, red_team, blue_team, fair):
         pygame.init()
         self.fps_controller = pygame.time.Clock()
         self.__sea = Group()
@@ -38,8 +38,9 @@ class Game:
         self.pause = False  # Abhi
         self.RCount = None  # Abhi
         self.BCount = None  # Abhi
-        self.RWins = 0 #Abhi
-        self.BWins = 0 #Abhi
+        self.RWins = 0  # Abhi
+        self.BWins = 0  # Abhi
+        self.fair = False  # Abhi
         self.explosion = pygame.image.load("images/explode.png")
         self.purple_pirate = pygame.image.load("images/piratepurple.png")
         self.screen = pygame.display.set_mode(
@@ -92,7 +93,7 @@ class Game:
                                 self.flag2, self.__Pirates)
         self.__island3 = Island(self.screen, 3, self,
                                 self.flag3, self.__Pirates)
-        self.__collectibles = self.create_map()
+        self.__collectibles = self.create_map(fair)
         # np array of items
         # rum = -1 #gunpowder = -2 #wood = -3
         # Abhi
@@ -191,8 +192,8 @@ class Game:
                     bottomRight[1] += 1
                 elif arr[i][j] == -3:
                     bottomRight[2] += 1
-        # mark = {-1: 'R', 0: '_', -2: 'G', -3: 'W'}
-        mark = {-1: 'R', 0: '_', -2: '_', -3: '_'}  # if watching only rum
+        mark = {-1: 'R', 0: '_', -2: 'G', -3: 'W'}
+        # mark = {-1: 'R', 0: '_', -2: '_', -3: '_'}  # if watching only rum
         with open('collectibles.txt', 'w') as f:
             for i in range(n):
                 for j in range(n):
@@ -208,50 +209,98 @@ class Game:
                 bottomRight[1]) + ' ' + str(bottomRight[2]) + '\n')
         return (topLeft, bottomRight), (topRight, bottomLeft)
 
-    def create_map(self):
+    def create_map(self, fair):
         """Take info about __collectibles and create the map"""
         im = np.zeros((self.__dim))
-
+        self.fair = fair
         size = self.__dim[0] * self.__dim[1]
         frac = size / 16
+        if (self.fair == False):
+            while len(self.__rum) < frac:
+                x = random.randint(0, self.__dim[0] - 1)
+                y = random.randint(0, self.__dim[1] - 1)
+                if (
+                    im[x][y] == 0
+                    and (x, y) not in self.__island1.coordi
+                    and (x, y) not in self.__island2.coordi
+                    and (x, y) not in self.__island3.coordi
+                ):
+                    self.__rum.add(Collectible(self.screen, x, y, -1))
+                    im[x][y] = -1
 
-        while len(self.__rum) < frac:
-            x = random.randint(0, self.__dim[0] - 1)
-            y = random.randint(0, self.__dim[1] - 1)
-            if (
-                im[x][y] == 0
-                and (x, y) not in self.__island1.coordi
-                and (x, y) not in self.__island2.coordi
-                and (x, y) not in self.__island3.coordi
-            ):
-                self.__rum.add(Collectible(self.screen, x, y, -1))
-                im[x][y] = -1
+            while len(self.__gunpowder) < frac:
+                x = random.randint(0, self.__dim[0] - 1)
+                y = random.randint(0, self.__dim[1] - 1)
+                if (
+                    im[x][y] == 0
+                    and (x, y) not in self.__island1.coordi
+                    and (x, y) not in self.__island2.coordi
+                    and (x, y) not in self.__island3.coordi
+                ):
+                    self.__gunpowder.add(Collectible(self.screen, x, y, -2))
+                    im[x][y] = -2
 
-        while len(self.__gunpowder) < frac:
-            x = random.randint(0, self.__dim[0] - 1)
-            y = random.randint(0, self.__dim[1] - 1)
-            if (
-                im[x][y] == 0
-                and (x, y) not in self.__island1.coordi
-                and (x, y) not in self.__island2.coordi
-                and (x, y) not in self.__island3.coordi
-            ):
-                self.__gunpowder.add(Collectible(self.screen, x, y, -2))
-                im[x][y] = -2
+            while len(self.__wood) < frac:
+                x = random.randint(0, self.__dim[0] - 1)
+                y = random.randint(0, self.__dim[1] - 1)
+                if (
+                    im[x][y] == 0
+                    and (x, y) not in self.__island1.coordi
+                    and (x, y) not in self.__island2.coordi
+                    and (x, y) not in self.__island3.coordi
+                ):
+                    self.__wood.add(Collectible(self.screen, x, y, -3))
+                    im[x][y] = -3
 
-        while len(self.__wood) < frac:
-            x = random.randint(0, self.__dim[0] - 1)
-            y = random.randint(0, self.__dim[1] - 1)
-            if (
-                im[x][y] == 0
-                and (x, y) not in self.__island1.coordi
-                and (x, y) not in self.__island2.coordi
-                and (x, y) not in self.__island3.coordi
-            ):
-                self.__wood.add(Collectible(self.screen, x, y, -3))
-                im[x][y] = -3
+            return im
+        # Abhi
+        elif (self.fair):
+            delX = self.__dim[0] // 4
+            delY = self.__dim[1] // 4
+            X = [delX*i for i in range(0, 5)]
+            Y = [delY*i for i in range(0, 5)]
+            frac = frac // 16
+            for i in range(4):
+                for j in range(4):
+                    tillNow = frac * (i*4 + j + 1)
+                    while len(self.__rum) < tillNow:
+                        x = random.randint(X[i], X[i+1] - 1)
+                        y = random.randint(Y[j], Y[j+1] - 1)
+                        if (
+                            im[x][y] == 0
+                            and (x, y) not in self.__island1.coordi
+                            and (x, y) not in self.__island2.coordi
+                            and (x, y) not in self.__island3.coordi
+                        ):
+                            self.__rum.add(Collectible(self.screen, x, y, -1))
+                            im[x][y] = -1
 
-        return im
+                    while len(self.__gunpowder) < tillNow:
+                        x = random.randint(X[i], X[i+1] - 1)
+                        y = random.randint(Y[j], Y[j+1] - 1)
+                        if (
+                            im[x][y] == 0
+                            and (x, y) not in self.__island1.coordi
+                            and (x, y) not in self.__island2.coordi
+                            and (x, y) not in self.__island3.coordi
+                        ):
+                            self.__gunpowder.add(
+                                Collectible(self.screen, x, y, -2))
+                            im[x][y] = -2
+
+                    while len(self.__wood) < tillNow:
+                        x = random.randint(X[i], X[i+1] - 1)
+                        y = random.randint(Y[j], Y[j+1] - 1)
+                        if (
+                            im[x][y] == 0
+                            and (x, y) not in self.__island1.coordi
+                            and (x, y) not in self.__island2.coordi
+                            and (x, y) not in self.__island3.coordi
+                        ):
+                            self.__wood.add(Collectible(self.screen, x, y, -3))
+                            im[x][y] = -3
+
+            return im
 
     def run_game(self):
         iter = 0
@@ -719,7 +768,8 @@ class Game:
         self.screen.blit(title, titlerect)
         head_font = pygame.font.SysFont(None, 40)
         norm_font = pygame.font.SysFont(None, 32)
-        blue_head = head_font.render(self.bname +" "+ str(self.BWins), False, BLUE)
+        blue_head = head_font.render(
+            self.bname + " " + str(self.BWins), False, BLUE)
         self.screen.blit(
             blue_head, ((self.__dim[0]) * 20 + 30, self.__dim[1] * 2.5))
         blue_total = norm_font.render(

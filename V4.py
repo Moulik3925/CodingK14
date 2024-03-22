@@ -251,10 +251,12 @@ def ActPirate(pirate):
         selfsig = replaceChar(selfsig, 3, 'X')
     elif teamsig[6] == 'C':
         r = random.randint(1, 100)
-        if r <= 30 and gunpowder <= 20 * ord(teamsig[6]):
+        if r <= 50 and gunpowder <= 15 * ord(teamsig[6]):
             selfsig = replaceChar(selfsig, 3, 'G')
-            x = (int(pirate.getID()) + r) % 40
-            y = 0
+            y = random.randint(0, 1)
+            if y == 1:
+                y = height-1
+            x = (int(pirate.getID()) + r) % width
             selfsig = replaceChar(selfsig, 4, chr(x))
             selfsig = replaceChar(selfsig, 5, chr(y))
         elif (selfsig[3] != 'A' and selfsig[3] != 'B' and selfsig[3] != 'C' and selfsig[3] != 'G'):
@@ -266,7 +268,7 @@ def ActPirate(pirate):
             elif (r == 3 and status[2] != 'myCaptured'):
                 selfsig = replaceChar(selfsig, 3, 'C')
     elif teamsig[6] == 'G':
-        if (gunpowder >= 50 * ord(selfsig[10])):
+        if (gunpowder >= 40 * ord(selfsig[10])):
             teamsig = replaceChar(teamsig, 6, 'C')
             pirate.setTeamSignal(teamsig)
 
@@ -305,7 +307,9 @@ def ActPirate(pirate):
         if (posn[0] == x and posn[1] == y):
             x = random.randint(0, width-1)
             x = (int(pirate.getID()) + x) % width
-            y = width - 1 - y
+            y = random.randint(0, 1)
+            if y == 1:
+                y = height-1
             selfsig = replaceChar(selfsig, 4, chr(x))
             selfsig = replaceChar(selfsig, 5, chr(y))
             pirate.setSignal(selfsig)
