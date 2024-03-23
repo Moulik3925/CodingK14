@@ -316,6 +316,8 @@ def ActPirate(pirate):
         q = 1
     notEnoughPirates = ((ord(teamsig[11]) < q and status[0] != 'myCaptured') or (ord(
         teamsig[12]) < q and status[1] != 'myCaptured') or (ord(teamsig[13]) < q and status[2] != 'myCaptured'))
+    if (G == 0 and T < 5):
+        notEnoughPirates = False
     barelyEnoughPirates = ((ord(teamsig[11]) <= q and status[0] != 'myCaptured') or (ord(
         teamsig[12]) <= q and status[1] != 'myCaptured') or (ord(teamsig[13]) <= q and status[2] != 'myCaptured'))
     # initialising signals
@@ -374,15 +376,25 @@ def ActPirate(pirate):
     if (selfsig[3] == 'X'):
         # pirate signal change to C if the pirate has landed where it was intended to
         if (posn[1] == (height-1 if deploy[1] == 0 else 0)):
-            selfsig = replaceChar(selfsig, 3, 'Y')
+            selfsig = replaceChar(selfsig, 3, 'Z')
         if (posn[0] == (width-1-id if deploy[0] == 0 else (id-1) % width)):
             finalReturn = moveTo(
                 posn[0], height-1 if deploy[1] == 0 else 0, pirate)
         else:
             finalReturn = moveToSexy((width-1-id if deploy[0] == 0 else (id-1) % width), ((
                 deploy[1]+id - 1) % width if deploy[1] == 0 else deploy[1]-id), pirate, "yFirst")
+    if (selfsig[3] == 'Z'):
+        # pirate signal change to C if the pirate has landed where it was intended to
+        if (posn[1] == (0 if deploy[1] == 0 else height - 1)):
+            selfsig = replaceChar(selfsig, 3, 'Y')
+        if (posn[0] == (width-1-id if deploy[0] == 0 else (id-1) % width)):
+            finalReturn = moveTo(
+                posn[0], height-1 if not (deploy[1] == 0) else 0, pirate)
+        else:
+            finalReturn = moveToSexy(
+                (width-1-id if deploy[0] == 0 else id), ((id - 1) % width if deploy[1] == 0 else deploy[1]+1-id), pirate, "yFirst")
     if (selfsig[3] == 'Y'):
-        if (posn[1] == (height-1 if not (deploy[1] == 0) else 0)):
+        if (posn[1] == (height-1 if (deploy[1] == 0) else 0)):
             if ((teamsig[11] <= teamsig[12] and teamsig[11] <= teamsig[13] and status[0] != 'myCaptured')):
                 selfsig = replaceChar(selfsig, 3, 'A')
                 teamsig = replaceChar(teamsig, 11, chr(ord(teamsig[11])+1))
@@ -394,7 +406,7 @@ def ActPirate(pirate):
                 teamsig = replaceChar(teamsig, 13, chr(ord(teamsig[13])+1))
         if (posn[0] == (width-1-id if (deploy[0] == 0) else (id-1) % width)):
             finalReturn = moveTo(
-                posn[0], height-1 if not (deploy[1] == 0) else 0, pirate)
+                posn[0], height-1 if (deploy[1] == 0) else 0, pirate)
         else:
             finalReturn = moveToSexy(
                 (width-1-id if (deploy[0] == 0) else id), ((id - 1) % width if (deploy[1] == 0) else deploy[1]+1-id), pirate, "yFirst")
@@ -405,7 +417,8 @@ def ActPirate(pirate):
 
     elif selfsig[3] == 'G':
         if selfsig[4] == chr(255):
-            x = random.randint(0, width-1)
+            x = ord(teamsig[15])
+            teamsig = replaceChar(teamsig, 15, chr((x+1) % width))
             y = 0
             selfsig = replaceChar(selfsig, 4, chr(x))
             selfsig = replaceChar(selfsig, 5, chr(y))
@@ -413,16 +426,14 @@ def ActPirate(pirate):
         x = ord(selfsig[4])
         y = ord(selfsig[5])
         if (posn[0] == x and posn[1] == y):
-            x = random.randint(0, width-1)
+            x = ord(teamsig[15])
+            teamsig = replaceChar(teamsig, 15, chr((x+1) % width))
             y = height - 1 - y
             selfsig = replaceChar(selfsig, 4, chr(x))
             selfsig = replaceChar(selfsig, 5, chr(y))
             pirate.setSignal(selfsig)
-        op = random.randint(1, 2)
-        if op == 1:
-            finalReturn = moveToSexy(x, y, pirate, "xFirst")
-        else:
-            finalReturn = moveToSexy(x, y, pirate, "yFirst")
+        finalReturn = moveToSexy(x, y, pirate, "xFirst")
+        pirate.setTeamSignal(teamsig)
     # updating X and Y positions
     teamsig = pirate.getTeamSignal()
     if (finalReturn == 1):
@@ -468,6 +479,7 @@ def ActTeam(team):
         teamsig = replaceChar(teamsig, 12, chr(0))
         teamsig = replaceChar(teamsig, 13, chr(0))
         teamsig = replaceChar(teamsig, 14, chr(0))
+        teamsig = replaceChar(teamsig, 15, chr(0))
 
     # for gettin max number of living opponents
     initialPirates = 16  # 8+8 of team blue and team red
@@ -516,7 +528,7 @@ def ActTeam(team):
     teamsig = replaceChar(teamsig, 12, chr(B))
     teamsig = replaceChar(teamsig, 13, chr(C))
     teamsig = replaceChar(teamsig, 14, chr(G))
-    print(Y, G, A, B, C, teamsig[6])
+    # print(Y, G, A, B, C, teamsig[6])
     if Y <= 2 and G+A+B+C > 0:
         teamsig = replaceChar(teamsig, 6, 'C')
     team.setTeamSignal(teamsig)

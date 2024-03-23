@@ -17,7 +17,7 @@ if __name__ == "__main__":
     player1 = V4_Abhi
     player2 = V5
     ML = True
-    fair = False
+    fair = True
     rate = 100000
     epochs = 100
     size = (40, 40)
