@@ -394,7 +394,7 @@ def ActPirate(pirate):
     if (selfsig[3] == 'X'):
         # pirate signal change to C if the pirate has landed where it was intended to
         if (posn[1] == (height-1 if deploy[1] == 0 else 0)):
-            selfsig = replaceChar(selfsig, 3, 'Z')
+            selfsig = replaceChar(selfsig, 3, 'Y')
         if (posn[0] == (width-1-id if deploy[0] == 0 else (id-1) % width)):
             finalReturn = moveTo(
                 posn[0], height-1 if deploy[1] == 0 else 0, pirate)
@@ -412,7 +412,7 @@ def ActPirate(pirate):
             finalReturn = moveToSexy(
                 (width-1-id if deploy[0] == 0 else id), ((id - 1)%width if deploy[1] == 0 else deploy[1]+1-id), pirate, "yFirst")
     if (selfsig[3] == 'Y'):
-        if (posn[1] == (height-1 if (deploy[1] == 0) else 0)):
+        if (posn[1] == (height-1 if not (deploy[1] == 0) else 0)):
             # r = random.randint(1, 3)
             # if (r == 1 and status[0] != 'myCaptured'):
             #     selfsig = replaceChar(selfsig, 3, 'A')
@@ -429,12 +429,12 @@ def ActPirate(pirate):
             elif ((teamsig[13] <= teamsig[11] and teamsig[13] <= teamsig[12]) and status[2] != 'myCaptured'):
                 selfsig = replaceChar(selfsig, 3, 'C')
                 teamsig = replaceChar(teamsig, 13, chr(ord(teamsig[13])+1))
-        if (posn[0] == (width-1-id if deploy[0] == 0 else (id-1) % width)):
+        if (posn[0] == (width-1-id if (deploy[0] == 0) else (id-1) % width)):
             finalReturn = moveTo(
-                posn[0], height-1 if (deploy[1] == 0) else 0, pirate)
+                posn[0], height-1 if not (deploy[1] == 0) else 0, pirate)
         else:
             finalReturn = moveToSexy(
-                (width-1-id if deploy[0] == 0 else id), ((id - 1) % width if deploy[1] == 0 else deploy[1]+1-id), pirate, "yFirst")
+                (width-1-id if (deploy[0] == 0) else id), ((id - 1) % width if (deploy[1] == 0) else deploy[1]+1-id), pirate, "yFirst")
         pirate.setTeamSignal(teamsig)
 
     if (selfsig[3] == 'A' or selfsig[3] == 'B' or selfsig[3] == 'C'):
