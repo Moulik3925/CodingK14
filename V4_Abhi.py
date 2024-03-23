@@ -262,7 +262,7 @@ def ActPirate(pirate):
         selfsig = replaceChar(selfsig, 3, 'X')
     elif teamsig[6] == 'C':
         r = random.randint(1, 100)
-        if (r <= 30 and gunpowder <= 20 * ord(teamsig[6]) and not ((ord(teamsig[11]) <= 1 and status[0]!='myCaptured') or (ord(teamsig[12]) <= 1 and status[1]!='myCaptured') or (ord(teamsig[13]) <= 1 and status[2]!='myCaptured'))):
+        if (r <= 30 and gunpowder <= 20 * ord(teamsig[10]) and not ((ord(teamsig[11]) <= 1 and status[0]!='myCaptured') or (ord(teamsig[12]) <= 1 and status[1]!='myCaptured') or (ord(teamsig[13]) <= 1 and status[2]!='myCaptured'))):
             selfsig = replaceChar(selfsig, 3, 'G')
             x = (int(pirate.getID()) + r) % 40
             y = 0
@@ -287,7 +287,7 @@ def ActPirate(pirate):
                 teamsig=replaceChar(teamsig,13,chr(ord(teamsig[13])+1))
     elif teamsig[6] == 'G':
         # if (gunpowder >= 50 * ord(selfsig[10])):
-        if ((gunpowder >= 50 * ord(selfsig[10])) or (ord(teamsig[11]) <= 1 and status[0]!='myCaptured') or (ord(teamsig[12]) <= 1 and status[1]!='myCaptured') or (ord(teamsig[13]) <= 1 and status[2]!='myCaptured')):
+        if ((gunpowder >= 50 * ord(teamsig[10])) or (ord(teamsig[11]) <= 1 and status[0]!='myCaptured') or (ord(teamsig[12]) <= 1 and status[1]!='myCaptured') or (ord(teamsig[13]) <= 1 and status[2]!='myCaptured')):
             teamsig = replaceChar(teamsig, 6, 'C')
             pirate.setTeamSignal(teamsig)
 
@@ -347,7 +347,7 @@ def ActPirate(pirate):
         if (posn[0] == x and posn[1] == y):
             x = random.randint(0, width-1)
             x = (int(pirate.getID()) + x) % width
-            y = width - 1 - y
+            y = height - 1 - y
             selfsig = replaceChar(selfsig, 4, chr(x))
             selfsig = replaceChar(selfsig, 5, chr(y))
             pirate.setSignal(selfsig)
@@ -452,7 +452,7 @@ def ActTeam(team):
     teamsig=replaceChar(teamsig,13,chr(C))
     teamsig=replaceChar(teamsig,14,chr(G))
     team.setTeamSignal(teamsig)
-    print(Y,G,A,B,C)
+    # print(Y,G,A,B,C)
 
     # team.buildWalls(1)
     # team.buildWalls(2)

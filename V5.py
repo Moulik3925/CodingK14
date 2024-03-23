@@ -18,6 +18,7 @@ def debugSignal(signal):
     for char in signal:
         print(ord(char), end=',')
     print()
+    
 
 
 def replaceChar(string, posn, char):
@@ -249,6 +250,7 @@ def ActPirate(pirate):
     deploy = pirate.getDeployPoint()
     selfsig = pirate.getSignal()
     status = pirate.trackPlayers()
+    notEnoughPirates = ((ord(teamsig[11]) <= 1 and status[0]!='myCaptured') or (ord(teamsig[12]) <= 1 and status[1]!='myCaptured') or (ord(teamsig[13]) <= 1 and status[2]!='myCaptured'))
     # initialising signals
     # 0 = id 1 = x, 2 = Y
     if (selfsig == ""):
@@ -258,17 +260,29 @@ def ActPirate(pirate):
     posn = pirate.getPosition()
     id = int(pirate.getID()) % width
     inspectForIsland(pirate)
+    teamsig = pirate.getTeamSignal()
     if teamsig[6] == 'X' and selfsig[3] != 'C' and selfsig[3] != 'B' and selfsig[3] != 'A' and selfsig[3] != 'Y' and selfsig[3] != 'Z':
         selfsig = replaceChar(selfsig, 3, 'X')
     elif teamsig[6] == 'C':
-        r = random.randint(1, 100)
-        if (r <= 30 and gunpowder <= 20 * ord(teamsig[6]) and not ((ord(teamsig[11]) <= 1 and status[0]!='myCaptured') or (ord(teamsig[12]) <= 1 and status[1]!='myCaptured') or (ord(teamsig[13]) <= 1 and status[2]!='myCaptured'))):
+        # print(ord(teamsig[11]), ord(teamsig[12]), ord(teamsig[13]), ord(teamsig[14]))
+        # r = random.randint(1, 100)
+        percent = 0.5
+        if ((ord(teamsig[11])+ord(teamsig[12])+ord(teamsig[13]) >= ord(teamsig[14])) and gunpowder <= 20 * ord(teamsig[10]) and not notEnoughPirates):
+            if(selfsig[3]=='A'):
+                teamsig=replaceChar(teamsig,11,chr(ord(teamsig[11])-1))
+            elif(selfsig[3]=='B'):
+                teamsig=replaceChar(teamsig,12,chr(ord(teamsig[12])-1))
+            elif(selfsig[3]=='C'):
+                teamsig=replaceChar(teamsig,13,chr(ord(teamsig[13])-1))
             selfsig = replaceChar(selfsig, 3, 'G')
-            x = (int(pirate.getID()) + r) % 40
-            y = 0
-            selfsig = replaceChar(selfsig, 4, chr(x))
-            selfsig = replaceChar(selfsig, 5, chr(y))
-        elif (selfsig[3] != 'A' and selfsig[3] != 'B' and selfsig[3] != 'C'):
+                
+            teamsig=replaceChar(teamsig,14,chr(ord(teamsig[14])+1))
+            # x = (int(pirate.getID()) + r) % 40
+            # y = 0
+            # selfsig = replaceChar(selfsig, 4, chr(x))
+            # selfsig = replaceChar(selfsig, 5, chr(y))
+        elif (gunpowder >= 50*ord(teamsig[10] ) and selfsig[3]=='G') or (selfsig[3]=='G' and notEnoughPirates ) or selfsig[3]=='Y':
+            # or (selfsig[3] != 'A' and selfsig[3] != 'B' and selfsig[3] != 'C')):
             # p = random.randint(1, 3)
             # if (r == 1 and status[0] != 'myCaptured'):
             #     selfsig = replaceChar(selfsig, 3, 'A')
@@ -276,20 +290,29 @@ def ActPirate(pirate):
             #     selfsig = replaceChar(selfsig, 3, 'B')
             # elif (r == 3 and status[2] != 'myCaptured'):
             #     selfsig = replaceChar(selfsig, 3, 'C')
+            b1 = selfsig[3]=='G'
+            b2 = False  
             if((teamsig[11]<=teamsig[12] and teamsig[11]<=teamsig[13] and status[0]!='myCaptured')):
                 selfsig = replaceChar(selfsig, 3, 'A')
                 teamsig=replaceChar(teamsig,11,chr(ord(teamsig[11])+1))
+                b2 = True
             elif((teamsig[12]<=teamsig[11] and teamsig[12]<=teamsig[13]) and status[1]!='myCaptured'):
                 selfsig = replaceChar(selfsig, 3, 'B')
                 teamsig=replaceChar(teamsig,12,chr(ord(teamsig[12])+1))
+                b2 = True
             elif((teamsig[13]<=teamsig[11] and teamsig[13]<=teamsig[12]) and status[2]!='myCaptured'):
                 selfsig = replaceChar(selfsig, 3, 'C')
                 teamsig=replaceChar(teamsig,13,chr(ord(teamsig[13])+1))
-    elif teamsig[6] == 'G':
-        # if (gunpowder >= 50 * ord(selfsig[10])):
-        if ((gunpowder >= 50 * ord(selfsig[10])) or (ord(teamsig[11]) <= 1 and status[0]!='myCaptured') or (ord(teamsig[12]) <= 1 and status[1]!='myCaptured') or (ord(teamsig[13]) <= 1 and status[2]!='myCaptured')):
-            teamsig = replaceChar(teamsig, 6, 'C')
-            pirate.setTeamSignal(teamsig)
+                b2 = True
+            if(b1 and b2):
+                teamsig=replaceChar(teamsig,14,chr(ord(teamsig[14])-1))
+                
+    pirate.setTeamSignal(teamsig)
+    # elif teamsig[6] == 'G':
+    #     # if (gunpowder >= 50 * ord(selfsig[10])):
+    #     if ((gunpowder >= 50 * ord(selfsig[10])) or (ord(teamsig[11]) <= 1 and status[0]!='myCaptured') or (ord(teamsig[12]) <= 1 and status[1]!='myCaptured') or (ord(teamsig[13]) <= 1 and status[2]!='myCaptured')):
+    #         teamsig = replaceChar(teamsig, 6, 'C')
+    #         pirate.setTeamSignal(teamsig)
 
     finalReturn = 0
     # SelfSignals
@@ -337,17 +360,25 @@ def ActPirate(pirate):
         else:
             finalReturn = moveToSexy(
                 (width-id if deploy[0] == 0 else id), (id - 1 if deploy[1] == 0 else deploy[1]+1-id), pirate, "yFirst")
+        pirate.setTeamSignal(teamsig)
 
-    elif (selfsig[3] == 'A' or selfsig[3] == 'B' or selfsig[3] == 'C'):
+    if (selfsig[3] == 'A' or selfsig[3] == 'B' or selfsig[3] == 'C'):
         selfsig, finalReturn = CaptureIslands(pirate, selfsig)
         
     elif selfsig[3] == 'G':
+        if selfsig[4] == chr(255):
+            x = random.randint(0, width-1)
+            x = (int(pirate.getID()) + x) % width
+            y = 0
+            selfsig = replaceChar(selfsig, 4, chr(x))
+            selfsig = replaceChar(selfsig, 5, chr(y))
+            
         x = ord(selfsig[4])
         y = ord(selfsig[5])
         if (posn[0] == x and posn[1] == y):
             x = random.randint(0, width-1)
             x = (int(pirate.getID()) + x) % width
-            y = width - 1 - y
+            y = height - 1 - y
             selfsig = replaceChar(selfsig, 4, chr(x))
             selfsig = replaceChar(selfsig, 5, chr(y))
             pirate.setSignal(selfsig)
@@ -398,9 +429,11 @@ def ActTeam(team):
         for i in range(20):
             teamsig += chr(255)
         teamsig = replaceChar(teamsig, 6, 'X')
-    if frame >= 200:
-        teamsig = replaceChar(teamsig, 6, 'C')
-    team.setTeamSignal(teamsig)
+        teamsig = replaceChar(teamsig,11,chr(0))
+        teamsig = replaceChar(teamsig,12,chr(0))
+        teamsig = replaceChar(teamsig,13,chr(0))
+        teamsig = replaceChar(teamsig,14,chr(0))
+    
 
     # for gettin max number of living opponents
     initialPirates = 16  # 8+8 of team blue and team red
@@ -419,12 +452,12 @@ def ActTeam(team):
     teamsig = replaceChar(teamsig, 10, chr(int(maxOpp)))
 
     # setTeamsig = G if any pirate has G
-    for signal in signals:
-        if (signal != ""):
-            if signal[3] == 'G':
-                teamsig = replaceChar(teamsig, 6, 'G')
-                team.setTeamSignal(teamsig)
-                break
+    # for signal in signals:
+    #     if (signal != ""):
+    #         if signal[3] == 'G':
+    #             teamsig = replaceChar(teamsig, 6, 'G')
+    #             team.setTeamSignal(teamsig)
+    #             break
     if teamsig[7] == 'Y':
         team.buildWalls(1)
         teamsig = replaceChar(teamsig, 7, 'N')
@@ -451,9 +484,10 @@ def ActTeam(team):
     teamsig=replaceChar(teamsig,12,chr(B))
     teamsig=replaceChar(teamsig,13,chr(C))
     teamsig=replaceChar(teamsig,14,chr(G))
+    print(Y,G,A,B,C,teamsig[6])
+    if Y == 0 and G+A+B+C>0:
+        teamsig = replaceChar(teamsig, 6, 'C')
     team.setTeamSignal(teamsig)
-    print(Y,G,A,B,C)
-
     # team.buildWalls(1)
     # team.buildWalls(2)
     # team.buildWalls(3)

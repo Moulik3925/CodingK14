@@ -10,12 +10,13 @@ import V3_Moulik
 import V3_Rishi
 import V4_Abhi
 import V4
+import V5
 
 
 if __name__ == "__main__":
-    player1 = V4
-    player2 = V4_Abhi
-    ML = False
+    player1 = V4_Abhi
+    player2 = V5
+    ML = True
     fair = True
     rate = 100000
     epochs = 20
