@@ -241,7 +241,61 @@ def enemyPresent(pirate):
             if who.any() == True:
                 return True
     return False
-
+def CaptureIslandsPrimitive(pirate):
+    status = pirate.trackPlayers()
+    # # print(status)
+    sig = pirate.getTeamSignal()
+    # # print(type(sig[0]))
+    r = random.randint(1, 4)
+    # # print (status[0],status[1],status[2],sep=',')
+    if (ord(sig[0]) != 255 and (status[0] != 'myCaptured')):
+        x = ord(sig[0])
+        y = ord(sig[1])
+        if r == 1:
+            x += 1
+            y += 1
+        if r == 2:
+            x += 1
+            y -= 1
+        if r == 3:
+            x -= 1
+            y -= 1
+        if r == 4:
+            x -= 1
+            y += 1
+        return (moveTo(x, y, pirate))
+    if (ord(sig[2]) != 255 and (status[1] != 'myCaptured')):
+        x = ord(sig[2])
+        y = ord(sig[3])
+        if r == 1:
+            x += 1
+            y += 1
+        if r == 2:
+            x += 1
+            y -= 1
+        if r == 3:
+            x -= 1
+            y -= 1
+        if r == 4:
+            x -= 1
+            y += 1
+        return (moveTo(x, y, pirate))
+    if (ord(sig[4]) != 255 and (status[2] != 'myCaptured')):
+        x = ord(sig[4])
+        y = ord(sig[5])
+        if r == 1:
+            x += 1
+            y += 1
+        if r == 2:
+            x += 1
+            y -= 1
+        if r == 3:
+            x -= 1
+            y -= 1
+        if r == 4:
+            x -= 1
+            y += 1
+        return (moveTo(x, y, pirate))
 
 def ActPirate(pirate):
     rum = pirate.getTotalRum()
@@ -422,6 +476,8 @@ def ActPirate(pirate):
             # print("C")
             teamsig = replaceChar(teamsig, 9, 'Y')
     pirate.setTeamSignal(teamsig)
+    if frame >= 2300:
+        CaptureIslandsPrimitive(pirate)
     return finalReturn
 
 
