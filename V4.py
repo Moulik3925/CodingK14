@@ -286,11 +286,9 @@ def ActPirate(pirate):
             elif (r == 3 and status[2] != 'myCaptured'):
                 selfsig = replaceChar(selfsig, 3, 'C')
         if (posn[0] == (width-id if deploy[0] == 0 else id-1)):
-            finalReturn = moveTo(
-                posn[0], height-1 if not (deploy[1] == 0) else 0, pirate)
+            finalReturn = moveTo(posn[0], height-1 if not (deploy[1] == 0) else 0, pirate)
         else:
-            finalReturn = moveToSexy(
-                (width-id if deploy[0] == 0 else id), (id - 1 if deploy[1] == 0 else deploy[1]+1-id), pirate, "yFirst")
+            finalReturn = moveToSexy((width-id if deploy[0] == 0 else id), (id - 1 if deploy[1] == 0 else deploy[1]+1-id), pirate, "yFirst")
     if (selfsig[3] == 'X'):
         # pirate signal change to C if the pirate has landed where it was intended to
         if (posn[1] == (height-1 if deploy[1] == 0 else 0)):
