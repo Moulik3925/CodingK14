@@ -62,6 +62,6 @@ if __name__ == "__main__":
         print(player1.name, p1Wins, sum(p1Wins))
         print(player2.name, p2Wins, sum(p2Wins))
     else:
-        G = Game(size, player1, player2, False)
+        G = Game(size, player1, player2, fair)
         # G.countCollect()
         G.run_game()
