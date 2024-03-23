@@ -356,7 +356,7 @@ def ActPirate(pirate):
                 posn[0], height-1 if not (deploy[1] == 0) else 0, pirate)
         else:
             finalReturn = moveToSexy(
-                (width-1-id if deploy[0] == 0 else id), (id - 1 if deploy[1] == 0 else deploy[1]+1-id), pirate, "yFirst")
+                (width-1-id if deploy[0] == 0 else id), ((id - 1)%width if deploy[1] == 0 else deploy[1]+1-id), pirate, "yFirst")
     if (selfsig[3] == 'Y'):
         if (posn[1] == (height-1 if (deploy[1] == 0) else 0)):
             # r = random.randint(1, 3)
