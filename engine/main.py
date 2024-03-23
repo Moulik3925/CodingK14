@@ -259,10 +259,10 @@ class Game:
             delY = self.__dim[1] // 4
             X = [delX*i for i in range(0, 5)]
             Y = [delY*i for i in range(0, 5)]
-            frac = frac // 16
+            f = frac / 100
             for i in range(4):
                 for j in range(4):
-                    tillNow = frac * (i*4 + j + 1)
+                    tillNow = f * (i*4 + j + 1)
                     while len(self.__rum) < tillNow:
                         x = random.randint(X[i], X[i+1] - 1)
                         y = random.randint(Y[j], Y[j+1] - 1)
