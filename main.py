@@ -15,7 +15,7 @@ import V5
 
 if __name__ == "__main__":
     player1 = V3_Moulik
-    player2 = V5
+    player2 = neeraje
     ML = True
     fair = True
     rate = 100000
