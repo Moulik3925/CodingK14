@@ -255,7 +255,7 @@ class Game:
             return im
         # Abhi
         elif (self.fair):
-            d = 10
+            d = 4
             D = d*d
             delX = self.__dim[0] // d
             delY = self.__dim[1] // d

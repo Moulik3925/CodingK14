@@ -17,7 +17,7 @@ if __name__ == "__main__":
     player1 = V4_Abhi
     player2 = V5
     ML = True
-    fair = True
+    fair = False
     rate = 100000
     epochs = 100
     size = (40, 40)
@@ -30,7 +30,7 @@ if __name__ == "__main__":
             G = Game(size, player1, player2, fair)
             G.ML = ML
             G.rate = rate
-            G.epoch = epoch + 1
+            G.epoch = epoch*2 + 1
             G.RWins = sum(p1Wins)
             G.BWins = sum(p2Wins)
             G.run_game()
@@ -43,11 +43,10 @@ if __name__ == "__main__":
                 p2Wins[2] += 1
             elif winner == "blue" and mode == 1:
                 p2Wins[3] += 1
-        for epoch in range(epochs//2):
             G = Game(size, player2, player1, fair)
             G.ML = ML
             G.rate = rate
-            G.epoch = epoch + epochs//2 + 1
+            G.epoch = epoch*2 + 2
             G.RWins = sum(p2Wins)
             G.BWins = sum(p1Wins)
             G.run_game()
