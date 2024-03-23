@@ -33,7 +33,8 @@ class Team:
         if self.__rum >= 50:
             self.__rum -= 50
             self.__created_count += 1
-            pirate_i = Pirate(self.screen, x, y, self.__type, self, str(self.__created_count))
+            pirate_i = Pirate(self.screen, x, y, self.__type,
+                              self, str(self.__created_count))
             self.__pirate_list.add(pirate_i)
 
             if (x // 20, y // 20) in self.__myGame._Game__PositionToPirate:
@@ -136,7 +137,7 @@ class Team:
                     island3.blue_wall_frame = self.__curr_frame
                 self.__wood -= 50
                 return
-            
+
     def addResource(self, type, x, y, frac):
         x = x * 20
         y = y * 20
@@ -174,7 +175,7 @@ class Team:
 
     def setTeamSignal(self, s):
         str = "wncc"
-        if type(s) != type(str):
+        if type(s) != type(str) or len(s) > 100:
             return
         self.__signal = s
 
@@ -183,13 +184,13 @@ class Team:
         for x in self.__pirate_list:
             res.append(x._Pirate__signal)
         return res
-    
+
     def trackPlayers(self):
         if self.__type == "red":
             return self.__myGame.island_status_red
         else:
             return self.__myGame.island_status_blue
-        
+
     def getTotalPirates(self):
         return len(self.__pirate_list)
 
@@ -209,8 +210,8 @@ class Team:
         return self.__myGame._Game__dim[0]
 
     def getDimensionY(self):
-        return self.__myGame._Game__dim[1]        
-            
+        return self.__myGame._Game__dim[1]
+
     def buildWalls(self, island_no):
         return self.__buildWalls(self.__myGame._Game__island1, self.__myGame._Game__island2, self.__myGame._Game__island3, island_no)
 
