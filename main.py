@@ -14,12 +14,12 @@ import V5
 
 
 if __name__ == "__main__":
-    player1 = V4_Abhi
+    player1 = V3_Moulik
     player2 = V5
     ML = True
     fair = True
     rate = 100000
-    epochs = 20
+    epochs = 100
     size = (40, 40)
     p1Wins = [0, 0, 0, 0]
     p2Wins = [0, 0, 0, 0]
