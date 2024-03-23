@@ -3,7 +3,7 @@ import math
 import numpy as np
 import time
 
-name = "V4_Abhi"
+name = "V5"
 # 20 char team signal syntax
 # 0,1 coordinates of island 1
 # 2,3 coordinates of island 2
