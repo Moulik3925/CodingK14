@@ -255,14 +255,16 @@ class Game:
             return im
         # Abhi
         elif (self.fair):
-            delX = self.__dim[0] // 4
-            delY = self.__dim[1] // 4
-            X = [delX*i for i in range(0, 5)]
-            Y = [delY*i for i in range(0, 5)]
-            frac = frac // 16
-            for i in range(4):
-                for j in range(4):
-                    tillNow = frac * (i*4 + j + 1)
+            d = 10
+            D = d*d
+            delX = self.__dim[0] // d
+            delY = self.__dim[1] // d
+            X = [delX*i for i in range(0, d+1)]
+            Y = [delY*i for i in range(0, d+1)]
+            f = frac / D
+            for i in range(d):
+                for j in range(d):
+                    tillNow = f * (i*d + j + 1)
                     while len(self.__rum) < tillNow:
                         x = random.randint(X[i], X[i+1] - 1)
                         y = random.randint(Y[j], Y[j+1] - 1)
