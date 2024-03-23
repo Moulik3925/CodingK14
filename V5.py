@@ -258,6 +258,8 @@ def ActPirate(pirate):
     
     notEnoughPirates = ((ord(teamsig[11]) <= 1 and status[0] != 'myCaptured') or (ord(
         teamsig[12]) <= 1 and status[1] != 'myCaptured') or (ord(teamsig[13]) <= 1 and status[2] != 'myCaptured'))
+    barelyEnoughPirates = ((ord(teamsig[11]) <= 2 and status[0] != 'myCaptured') or (ord(
+        teamsig[12]) <= 2 and status[1] != 'myCaptured') or (ord(teamsig[13]) <= 2 and status[2] != 'myCaptured'))
     # initialising signals
     # 0 = id 1 = x, 2 = Y
     if (selfsig == ""):
@@ -277,7 +279,7 @@ def ActPirate(pirate):
         # print(ord(teamsig[11]), ord(teamsig[12]), ord(teamsig[13]), ord(teamsig[14]))
         # r = random.randint(1, 100)
         percent = 0.5
-        if ((ord(teamsig[11])+ord(teamsig[12])+ord(teamsig[13]) >= ord(teamsig[14])) and gunpowder <= 20 * ord(teamsig[10]) and not notEnoughPirates):
+        if ((ord(teamsig[11])+ord(teamsig[12])+ord(teamsig[13]) >= ord(teamsig[14])) and gunpowder <= 20 * ord(teamsig[10]) and not barelyEnoughPirates):
             if (selfsig[3] == 'A'):
                 teamsig = replaceChar(teamsig, 11, chr(ord(teamsig[11])-1))
             elif (selfsig[3] == 'B'):
